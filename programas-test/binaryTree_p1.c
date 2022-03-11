@@ -139,6 +139,9 @@ struct node *search(int key, struct node *leaf)
       return search(key, leaf->right);
     }
   }
+
+  else
+    return 0;
 }
 
 /*
