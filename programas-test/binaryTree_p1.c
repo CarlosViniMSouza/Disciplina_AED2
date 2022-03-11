@@ -114,3 +114,35 @@ insert(int key, struct node **leaf)
 
 25. Depois de criar o novo nó, a função de inserção não chamará mais a si mesma. Observe, também, que se o elemento já estiver na árvore, ele não será adicionado duas vezes.
 */
+
+struct node *search(int key, struct node *leaf)
+{
+
+  if (leaf != 0)
+  {
+
+    // se o valor procurado é igual ao valor do ultimo numero inserido, ele retornará tal valor.
+    if (key == leaf->id)
+    {
+      return leaf;
+    }
+
+    // se o valor procurado é inferior ao valor do ultimo numero inserido, ele irá á sub-arvore esquerda.
+    else if (key < leaf->id)
+    {
+      return search(key, leaf->left);
+    }
+
+    // se o valor procurado é superior ao valor do ultimo numero inserido, ele irá á sub-arvore direita.
+    else
+    {
+      return search(key, leaf->right);
+    }
+  }
+}
+
+/*
+26. A função de busca mostrada acima se move recursivamente para baixo na árvore até alcançar um nó com um valor de chave igual ao valor pelo qual a função está procurando ou até que a função atinja um nó não inicializado, o que significa que o valor procurado não é armazenado em a árvore binária.
+
+27. Ele retorna um ponteiro para o nó para a instância anterior da função que o chamou.
+*/
