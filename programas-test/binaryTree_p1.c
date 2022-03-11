@@ -41,4 +41,44 @@
 --> Implementando uma árvore binária:
 */
 
-// Primeiro, é necessário ter uma estrutura, ou classe, definida como um nó.
+// Primeiro, é necessário ter uma estrutura, ou classe, definida como um nó (OBS.: Node = nó).
+
+struct Node
+{
+  int id;
+  struct node *left;
+  struct node *right;
+};
+
+/*
+16. A estrutura tem a capacidade de armazenar o id e contém os dois nós filhos que definem o nó raiz como parte de uma árvore. Na verdade, o próprio nó é muito semelhante ao nó em uma lista vinculada. E ponteiros são necessários para permitir a criação arbitrária de novos nós na árvore.
+
+17. Há várias operações importantes: Inserir/Buscar/Remover elementos, e Excluir Árvore.
+
+18. Também precisaremos acompanhar o nó raiz da árvore binária, que nos dará acesso ao restante dos dados:
+*/
+
+struct Node *root = 0;
+
+// 19. É necessário inicializar o root com 0, para que as outras funções possam reconhecer que a árvore ainda não existe. O 'destroy_tree' mostrado abaixo, liberará todos os nós da árvore armazenada sob a folha do nó: árvore (OBS.: leaf = folha).
+
+void destroy_tree(struct Node *leaf)
+{
+
+  if (leaf != 0)
+  {
+    destroy_tree(leaf->left);
+    destroy_tree(leaf->right);
+    free(leaf);
+  }
+}
+
+/*
+20. A função 'destroy_tree' vai para a parte inferior de cada parte da árvore, ou seja, pesquisando enquanto há um nó não nulo, exclui essa folha e depois volta para cima.
+
+21. A função exclui o nó mais à esquerda, depois o nó filho direito do nó pai do nó mais à esquerda e, em seguida, exclui o nó pai, em seguida, volta a excluir o outro nó filho do pai do nó que acabou de excluir e continua essa exclusão, trabalhando até o nó da árvore na qual delete_tree foi originalmente chamado.
+
+22. Na árvore de exemplo acima, a ordem de exclusão dos nós seria 5 8 6 11 18 14 10. Observe que é necessário excluir todos os nós filhos para evitar o desperdício de memória.
+*/
+
+// 23. A função de inserção criará uma nova árvore, se necessário; ele depende de ponteiros para ponteiros para lidar com o caso de uma árvore inexistente (a raiz apontando para NULL). Ao levar um ponteiro a outro ponteiro, é possível alocar memória se o ponteiro raiz for NULL.
