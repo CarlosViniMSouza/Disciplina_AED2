@@ -43,7 +43,7 @@
 
 // Primeiro, é necessário ter uma estrutura, ou classe, definida como um nó (OBS.: Node = nó).
 
-struct Node
+struct node
 {
   int id;
   struct node *left;
@@ -58,11 +58,11 @@ struct Node
 18. Também precisaremos acompanhar o nó raiz da árvore binária, que nos dará acesso ao restante dos dados:
 */
 
-struct Node *root = 0;
+struct node *root = 0;
 
 // 19. É necessário inicializar o root com 0, para que as outras funções possam reconhecer que a árvore ainda não existe. O 'destroy_tree' mostrado abaixo, liberará todos os nós da árvore armazenada sob a folha do nó: árvore (OBS.: leaf = folha).
 
-void destroy_tree(struct Node *leaf)
+void destroy_tree(struct node *leaf)
 {
 
   if (leaf != 0)
@@ -82,3 +82,35 @@ void destroy_tree(struct Node *leaf)
 */
 
 // 23. A função de inserção criará uma nova árvore, se necessário; ele depende de ponteiros para ponteiros para lidar com o caso de uma árvore inexistente (a raiz apontando para NULL). Ao levar um ponteiro a outro ponteiro, é possível alocar memória se o ponteiro raiz for NULL.
+
+insert(int key, struct node **leaf)
+{
+  if (*leaf == 0)
+  {
+    // inicializando a árvore binária.
+    *leaf = (struct node *)malloc(sizeof(struct node));
+    (*leaf)->id = key;
+
+    // inicializando os filhos para null.
+    (*leaf)->left = 0;
+    (*leaf)->right = 0;
+  }
+
+  // caso o valor inserido seja menor que o nó raiz, ele será direcionado á sub-arvore esquerda.
+  else if (key < (*leaf)->id)
+  {
+    insert(key, &(*leaf)->left);
+  }
+
+  // caso o valor inserido seja maior que o nó raiz, ele será direcionado á sub-arvore direita.
+  else if (key > (*leaf)->id)
+  {
+    insert(key, &(*leaf)->right);
+  }
+}
+
+/*
+24. A função insert busca, descendo a árvore de nós filhos, seguindo as regras prescritas, à esquerda para um valor menor ser inserido e à direita para um valor maior, até chegar a um nó NULL - um nó vazio - ao qual aloca memória e inicializa com o valor da chave enquanto define os ponteiros de nó filho do novo nó como NULL.
+
+25. Depois de criar o novo nó, a função de inserção não chamará mais a si mesma. Observe, também, que se o elemento já estiver na árvore, ele não será adicionado duas vezes.
+*/
