@@ -1,4 +1,4 @@
-cd programas-teste #acessar o diretorio necessario
-gcc fatorial.c -o aula #fazer a compilacao do arquivo '.c'
+cd livro_aed_descomp #acessar o diretorio necessario
+gcc intro.c -o aula #fazer a compilacao do arquivo '.c'
 ./aula #chamar o executavel
 rm aula.exe
