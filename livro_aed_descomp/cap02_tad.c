@@ -1,6 +1,6 @@
 /*
 
-Tipo Abstrato de Dados (TAD):
+** Tipo Abstrato de Dados (TAD) **
 
 Definição => Um 'tipo de dado' define o conjunto de valores e operações que uma variavel pode assumir!
 
@@ -54,5 +54,48 @@ Usar um TAD tem algumas vantagens:
   4. Reutilização;
 
 Agora, vejamos alguns tipos e exemplos de TAD.
+
+** tipo FILE **
+
+FILE => estrutura que contém informações de um arquivo ou de um fluxo do texto necessário para realizarmos as operações de entrada ou de saída. Veja o exemplo:
+
+*/
+
+typedef struct
+{
+  /* data */
+  int level;
+  int bsize;
+  char fd;
+  unsigned flags;
+  unsigned istemp;
+  unsigned char hold;
+  unsigned char *curp;
+  unsigned char *buffer;
+  short token;
+} FILE;
+
+// Agora, vamos declarar um ponteiro de arquivo para usarmos essa estrutura:
+FILE *file;
+
+// Assim, o usuário só tem acesso aos dados armazenados, e não pode acessa-los diretamente.
+
+/*
+
+Detalhes Importantes:
+
+1. o tipo FILE é um tipo 'OPACO' para o usuário da biblioteca. Somente a lib sabe o conteúdo do tipo e que pode manipulá-lo.
+
+2. E só pode ser dito do tipo 'OPACO', quando a estrutura é incompletamente definida na interface. Assim, somente funções especificas podem acessa-la.
+
+** Operações Básicas **
+
+  ° Criação do TAD
+  ° Inserir novo elemento no TAD
+  ° Remover um elemento do TAD
+  ° Acessar um elemento do TAD
+  ° Deletar o TAD
+
+Daqui em diante, veremos mais sobre o 'typedef struct'
 
 */
