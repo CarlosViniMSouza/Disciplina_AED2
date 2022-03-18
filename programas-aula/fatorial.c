@@ -2,12 +2,12 @@
 #include <conio.h>
 
 // protótipo da função fatorial
-double fatorial(int n);
+float fatorial(int n);
 
 int main(void)
 {
   int numero;
-  double fat;
+  float fat;
 
   printf("Digite um numero inteiro: ");
   scanf("%d", &numero);
@@ -17,22 +17,22 @@ int main(void)
 
   printf("Fatorial de %d = %.0lf", numero, fat);
 
-  getch();
-
   return 0;
 }
 
 // Função recursiva que calcula o fatorial de um numero inteiro n
-double fatorial(int n)
+float fatorial(int num)
 {
-  double vfat;
+  float vfat;
 
-  if (n <= 1)
+  if (num <= 1)
     return (1);
 
   else
   {
-    vfat = n * fatorial(n - 1);
+    // a função fatorial se auto-chama até chegar em 1.
+    // Assim, teremos: n * (n - 1) * (n - 2) * ... * 2 * 1
+    vfat = num * fatorial(num - 1);
     return (vfat);
   }
 }
