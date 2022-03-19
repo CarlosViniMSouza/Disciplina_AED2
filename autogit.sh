@@ -1,4 +1,4 @@
 git add -A
-git commit -m "livro_aed_descomp: cap02_ponto.c -> input data -> add"
+git commit -m "programas-aula: analise_comb.c -> add"
 git push
 git status
