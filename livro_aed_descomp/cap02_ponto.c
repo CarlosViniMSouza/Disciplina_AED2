@@ -15,7 +15,7 @@ void pontoLiberar(Ponto *p);
 int pontoAcessar(Ponto *p, float *x, float *y);
 
 // Procedimento p/ atribuir conteudo em um ponto':
-int pontoAtribuir(Ponto *p, float *x, float *y);
+int pontoAtribuir(Ponto *p, float x, float y);
 
 // Calcular distância entre 2 pontos:
 float pontoDistancia(Ponto *p1, Ponto *p2);
@@ -28,7 +28,20 @@ struct ponto
 // Nossa funcao principal
 int main()
 {
-  printf("Em construcao!");
+  float d;
+  Ponto *p, *q;
+
+  p = pontoCriar(10, 20);
+  q = pontoCriar(6, 15);
+
+  d = pontoDistancia(p, q);
+
+  printf("Distancia entre os pontos P e Q = %.2f", d);
+
+  pontoLiberar(p);
+  pontoLiberar(q);
+
+  return 0;
 }
 
 // Vamos desenvolver nossos procedimentos:
@@ -68,7 +81,7 @@ int pontoAcessar(Ponto *p, float *x, float *y)
 }
 
 // 4. Atribuindo valor ao ponto:
-int pontoAtribuir(Ponto *p, float *x, float *y)
+int pontoAtribuir(Ponto *p, float x, float y)
 {
   if (p == NULL)
   {
@@ -78,4 +91,17 @@ int pontoAtribuir(Ponto *p, float *x, float *y)
   p->x = x;
   p->y = y;
   return 1;
+}
+
+// 5. Calcular a distância entre 2 pontos:
+float pontoDistancia(Ponto *p1, Ponto *p2)
+{
+  if (p1 == NULL || p2 == NULL)
+  {
+    return -1;
+  }
+
+  float dx = p1->x - p2->x;
+  float dy = p1->y - p2->y;
+  return sqrt(dx * dx + dy * dy);
 }
