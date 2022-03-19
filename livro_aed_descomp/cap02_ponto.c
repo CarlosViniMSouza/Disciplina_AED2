@@ -54,4 +54,28 @@ void pontoLiberar(Ponto *p)
   free(p);
 }
 
-// Continuo quando voltar da aula (17/03/2022 - 10:49 [horario Brasilia])
+// 3. Acessando conteúdo do ponto:
+int pontoAcessar(Ponto *p, float *x, float *y)
+{
+  if (p == NULL)
+  {
+    return 0;
+  }
+
+  *x = p->x;
+  *y = p->y;
+  return 1;
+}
+
+// 4. Atribuindo valor ao ponto:
+int pontoAtribuir(Ponto *p, float *x, float *y)
+{
+  if (p == NULL)
+  {
+    return 0;
+  }
+
+  p->x = x;
+  p->y = y;
+  return 1;
+}
