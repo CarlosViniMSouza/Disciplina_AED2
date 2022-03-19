@@ -2,38 +2,35 @@
 #include <stdio.h>
 #include <math.h>
 
-// Criando um tipo de dado chamado 'Ponto':
-typedef struct ponto Ponto;
-
-// Procedimento p/ criar um novo elemento 'ponto':
-Ponto *pontoCriar(float x, float y);
-
-// Procedimento p/ liberar um elemento 'ponto':
-void pontoLiberar(Ponto *p);
-
-// Procedimento p/ acessar o conteudo de um 'ponto':
-int pontoAcessar(Ponto *p, float *x, float *y);
-
-// Procedimento p/ atribuir conteudo em um ponto':
-int pontoAtribuir(Ponto *p, float x, float y);
-
-// Calcular distância entre 2 pontos:
-float pontoDistancia(Ponto *p1, Ponto *p2);
-
-struct ponto
-{ // Definimos o tipo de dados
+typedef struct ponto
+{
   float x, y;
-};
+} Ponto; // Criando um tipo de dado chamado 'Ponto'
+
+Ponto *pontoCriar(float x, float y); // Procedimento p/ criar um novo elemento 'ponto'
+
+void pontoLiberar(Ponto *p); // Procedimento p/ liberar um elemento 'ponto'
+
+int pontoAcessar(Ponto *p, float *x, float *y); // Procedimento p/ acessar o conteudo de um 'ponto'
+
+int pontoAtribuir(Ponto *p, float x, float y); // Procedimento p/ atribuir conteudo em um ponto'
+
+float pontoDistancia(Ponto *p1, Ponto *p2); // Procedimento p/ Calcular distância entre 2 pontos
 
 // Nossa funcao principal
 int main()
 {
-  float d;
+  float d, u1, u2, v1, v2; // Nossa variavel que tera o resultado do calculo
   Ponto *p, *q;
 
-  p = pontoCriar(10, 20);
-  q = pontoCriar(6, 15);
+  printf("digite os valorres de X e Y do ponto 1 = ");
+  scanf("%f %f", &u1, &u2);
 
+  printf("digite os valorres de X e Y do ponto 2 = ");
+  scanf("%f %f", &v1, &v2);
+
+  p = pontoCriar(u1, u2);
+  q = pontoCriar(v1, v2);
   d = pontoDistancia(p, q);
 
   printf("Distancia entre os pontos P e Q = %.2f", d);
@@ -46,7 +43,7 @@ int main()
 
 // Vamos desenvolver nossos procedimentos:
 
-// 1. Criando um ponto:
+// 1. Criando um ponto (aqui, precisamos alocar memoria p/ criar um ponto):
 Ponto *pontoCriar(float x, float y)
 {
 
@@ -61,13 +58,13 @@ Ponto *pontoCriar(float x, float y)
   return p;
 }
 
-// 2. Liberando um ponto da nossa memória:
+// 2. Liberando um ponto da nossa memória (Aqui, deletamos o espaço ocupado na memoria manualmente):
 void pontoLiberar(Ponto *p)
 {
   free(p);
 }
 
-// 3. Acessando conteúdo do ponto:
+// 3. Acessando conteúdo do ponto (P/ enviar o conteúdo das variaveis via-ponteiros):
 int pontoAcessar(Ponto *p, float *x, float *y)
 {
   if (p == NULL)
@@ -96,8 +93,8 @@ int pontoAtribuir(Ponto *p, float x, float y)
 // 5. Calcular a distância entre 2 pontos:
 float pontoDistancia(Ponto *p1, Ponto *p2)
 {
-  if (p1 == NULL || p2 == NULL)
-  {
+  if (p1 == NULL && p2 == NULL)
+  { // Podemos trocar o && por ||
     return -1;
   }
 
