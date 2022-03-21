@@ -1,4 +1,4 @@
 git add -A
-git commit -m "programas-aula: arv_bin.c -> add ObterOpcaoMenu()"
+git commit -m "programas-test: ponteiros_resumo.c -> testando ponteiro X"
 git push
 git status
