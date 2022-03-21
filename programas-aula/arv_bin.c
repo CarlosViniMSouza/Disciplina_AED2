@@ -95,3 +95,22 @@ void menu()
     } // switch
   }   // for
 }
+
+int ObterOpcaoMenu()
+{
+  int opcao;
+  printf("\n");
+  printf("*         Árvore Binária           *");
+  printf("\n");
+  printf("*             Menu                 *");
+  printf("\n");
+  printf("* [1] - Inserir                    *");
+  printf("* [2] - Exibir Pré-ordem           *");
+  printf("* [3] - Exibir Em Ordem            *");
+  printf("* [4] - Exibir Pós-Ordem           *");
+  printf("* [5] - Sair                       *");
+  printf("\n");
+  printf("Entre com a opcao = ");
+  scanf("%d", &opcao);
+  return opcao;
+}
