@@ -229,12 +229,13 @@ void inserir(NO **p_raiz, int p_elemento, int coluna, int linha)
 }
 
 /*
-Procedimento exibirPreOrdem: Exibe todos os elementos da árvore binária recursivamente
-                             na ordem: Pré-ordem.
+Procedimento exibirPreOrdem: Exibe todos os elementos da árvore binária recursivamente na ordem: Pré-ordem.
+
 Parâmetros:
-           **p_raiz  : Parâmetro passado por valor que indica o ponteiro
-                       para o NO RAIZ da árvore binária.
+           **p_raiz  : Parâmetro passado por valor que indica o ponteiro para o NO RAIZ da árvore binária.
+
 */
+
 void exibirPreOrdem(NO *p_raiz, int p_coluna)
 {
   if (p_raiz != NULL)

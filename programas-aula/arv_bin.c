@@ -27,18 +27,21 @@ typedef struct TNO
 // OBS: A árvore será chamada pelo seu NÓ principal: raiz
 
 // declarando procedimentos e funcoes:
-void iniciarArv(NO **p_raiz);
-void obterDados(NO *elem);
-void inserirElem(NO **p_raiz, int elem);
-void exibirPreOrdem(NO *p_raiz, int p_coluna);
+void criarArvore(NO **p_raiz);
+void inserir(NO **p_raiz, int elem);
+void exibirEmOrdem(NO *p_raiz);
+void exibirPosOrdem(NO *p_raiz);
+void exibirPreOrdem(NO *p_raiz);
+void obterDados(int *elem);
+int ObterOpcaoMenu();
 void menu();
-void configurarAmb();
+void configurarAmbiente();
 
 /* Iremos desenvolver as outras partes no decorrer da caminhada */
 
 int main()
 {
-  void configurarAmb();
+  void configurarAmbiente();
   void menu();
 }
 
@@ -49,7 +52,7 @@ void menu()
   NO *raiz;
 
   // Iniciar Arvore Binaria
-  iniciarArv(&raiz);
+  criarArvore(&raiz);
 
   // Iniciar no sistema de MENU da tela
   for (;;)
@@ -62,15 +65,13 @@ void menu()
       // Obter o valor de um novo dado: elemento
       // Parâmetro passado por Referência: &elemento
       obterDados(&elem);
-      inserirElem(&raiz, elem, 60, 2);
+      inserir(&raiz, elem, 60, 2);
       break;
 
     case 2:
       // Exite todos os dados da árvore binaria em Pré-ordem.
       exibirPreOrdem(raiz, 2);
       printf("Pressione uma tecla para continuar.");
-      getchar();
-      getchar();
       break;
 
     case 3:
@@ -113,4 +114,14 @@ int ObterOpcaoMenu()
   printf("Entre com a opcao = ");
   scanf("%d", &opcao);
   return opcao;
+}
+
+void obterDados(int *elem)
+{
+  // Limpar a tela
+  printf("\n");
+  printf("*       Entrada de Dados           *");
+  printf("\n");
+  printf("Entre com o valor do Elemento: ");
+  scanf("%d", elem);
 }
