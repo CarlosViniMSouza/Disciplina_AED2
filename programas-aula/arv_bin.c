@@ -125,3 +125,5 @@ void obterDados(int *elem)
   printf("Entre com o valor do Elemento: ");
   scanf("%d", elem);
 }
+
+// Vamos fazer algumas ediçoes amanha

@@ -1,4 +1,4 @@
 git add -A
-git commit -m "programas-aula: arv_bin.c -> add funcao obterDados(int *elem)"
+git commit -m "programas-aula: arv_bin.c -> lembrete add"
 git push
 git status
