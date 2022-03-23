@@ -59,6 +59,7 @@ void menu()
   for (;;)
   { // Indica uma repetição (loop) INFINITO
     // Limpa a tela
+    system("cls");
     opcao = ObterOpcaoMenu();
     switch (opcao)
     {
@@ -72,7 +73,7 @@ void menu()
 
     case 2:
       // Limpa a tela
-
+      system("cls");
       // Exite todos os dados da árvore binaria em Pré-ordem.
       exibirPreOrdem(raiz);
       printf("Pressione uma tecla para continuar.");
@@ -91,6 +92,8 @@ void menu()
       break;
 
     case 5:
+      // Limpa a Tela
+      system("cls");
       // Para sair do programa deve-se
       // desalocar toda memória alocada.
       printf("Mensagem: Programa Finalizado.");
