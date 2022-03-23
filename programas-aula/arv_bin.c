@@ -1,8 +1,6 @@
 /*
 Carlos Souza
-*/
 
-/*
 Assunto: Árvore Binária
     1 - Estrutura do NO de uma árvore binária
     2 - Criação da Árvore Binária
@@ -16,62 +14,70 @@ Assunto: Árvore Binária
 #include <string.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <windows.h>
 
+// Criar a estrutura NO
 typedef struct TNO
 {
-  int numero;      // Dados armazenado no 'NO'
-  struct TNO *esq; // Ponteiro que levará o numero para o prox. No da sub-arvore esquerda;
-  struct TNO *dir; // Ponteiro que levará o numero para o prox. No da sub-arvore direita;
-} NO;
+  // Dado do NO
+  int numero;
+  // Ponteiro para o próximo NO da sub-arvore esquerda
+  struct TNO *esquerda;
+  // Ponteiro para o próximo NO da sub-arvore direita
+  struct TNO *direita;
+} NO; // NO: criação de um novo tipo de dado chamado NO
 
-// OBS: A árvore será chamada pelo seu NÓ principal: raiz
-
-// declarando procedimentos e funcoes:
+// Declarando os procedimentos e funções:
 void criarArvore(NO **p_raiz);
-void inserir(NO **p_raiz, int elem);
+void inserir(NO **p_raiz, int p_elemento);
+void exibirPreOrdem(NO *p_raiz);
 void exibirEmOrdem(NO *p_raiz);
 void exibirPosOrdem(NO *p_raiz);
-void exibirPreOrdem(NO *p_raiz);
-void obterDados(int *elem);
-int ObterOpcaoMenu();
+void obterDados(int *p_elemento);
 void menu();
-void configurarAmbiente();
+int ObterOpcaoMenu();
 
-/* Iremos desenvolver as outras partes no decorrer da caminhada */
-
+// Programa Principal
 int main()
 {
-  void configurarAmbiente();
-  void menu();
-}
+  menu();
+} // Fim programa.
 
+// Processa a opção selecionada no Menu
 void menu()
 {
-  int op;
-  int elem = 0;
+  int opcao;
+  int elemento = 0;
+
+  // OBS: A árvore será chamada pelo seu NÓ principal: raiz.
+  // Declarar um ponteiro para a estrutura de uma árvore binária do tipo NO chamada raiz.
   NO *raiz;
 
-  // Iniciar Arvore Binaria
+  // Inicializar o ponteiro da árvore binária
   criarArvore(&raiz);
 
-  // Iniciar no sistema de MENU da tela
   for (;;)
   { // Indica uma repetição (loop) INFINITO
-
-    op = ObterOpcaoMenu();
-    switch (op)
+    // Limpa a tela
+    opcao = ObterOpcaoMenu();
+    switch (opcao)
     {
     case 1:
       // Obter o valor de um novo dado: elemento
       // Parâmetro passado por Referência: &elemento
-      obterDados(&elem);
-      inserir(&raiz, elem, 60, 2);
+      getchar();
+      obterDados(&elemento);
+      inserir(&raiz, elemento);
       break;
 
     case 2:
+      // Limpa a tela
+
       // Exite todos os dados da árvore binaria em Pré-ordem.
-      exibirPreOrdem(raiz, 2);
+      exibirPreOrdem(raiz);
       printf("Pressione uma tecla para continuar.");
+      getchar();
+
       break;
 
     case 3:
@@ -92,38 +98,160 @@ void menu()
       exit(EXIT_SUCCESS);
 
     default:
-      printf("Mensagem: Opção Inválida.");
+      printf("Mensagem: Opcao Invalida.");
     } // switch
   }   // for
 }
 
+// Monta o Menu e obtem a opção selecionada
 int ObterOpcaoMenu()
 {
   int opcao;
-  printf("\n");
-  printf("*         Árvore Binária           *");
-  printf("\n");
-  printf("*             Menu                 *");
-  printf("\n");
-  printf("* [1] - Inserir                    *");
-  printf("* [2] - Exibir Pré-ordem           *");
-  printf("* [3] - Exibir Em Ordem            *");
-  printf("* [4] - Exibir Pós-Ordem           *");
-  printf("* [5] - Sair                       *");
-  printf("\n");
-  printf("Entre com a opcao = ");
+  system("cls");
+  printf("************************************\n");
+  printf("*         Arvore Binaria           *\n");
+  printf("************************************\n");
+  printf("*             Menu                 *\n");
+  printf("************************************\n");
+  printf("* [1] - Inserir                    *\n");
+  printf("* [2] - Exibir Pre-ordem           *\n");
+  printf("* [3] - Exibir Em Ordem            *\n");
+  printf("* [4] - Exibir Pos-Ordem           *\n");
+  printf("* [5] - Sair                       *\n");
+  printf("************************************\n");
+  printf("\nEntre com a opcao = ");
   scanf("%d", &opcao);
   return opcao;
 }
 
-void obterDados(int *elem)
+/*
+Procedimento obterDados: Obtem o valor de um dado (elemento). Parâmetros:
+
+1 - p_elemento : Parâmetro passado por referência para obter o valor de um elemento.
+*/
+
+void obterDados(int *p_elemento)
 {
-  // Limpar a tela
-  printf("\n");
-  printf("*       Entrada de Dados           *");
-  printf("\n");
-  printf("Entre com o valor do Elemento: ");
-  scanf("%d", elem);
+  system("cls");
+  printf("************************************\n");
+  printf("*       Entrada de Dados           *\n");
+  printf("************************************\n");
+  printf("\nEntre com o valor do Elemento: ");
+  scanf("%d", p_elemento);
 }
 
-// Vamos fazer algumas ediçoes amanha
+/*
+Procedimento criarArvore: Inicializa uma árvore binária vazia. Parâmetros:
+
+1 - **p_raiz  : Parâmetro passado por referência de ponteiro para ponteiro.
+
+Representa o NO raiz da árvore binária.
+*/
+
+void criarArvore(NO **p_raiz)
+{
+  // OBS: NULL é um valor que indica um endereço de memória vazio válido.
+  *p_raiz = NULL;
+}
+
+/*
+Procedimento inserir: insere um novo elemento na árvore binária recursivamente.
+
+Parâmetros:
+
+1 - **p_raiz  : Parâmetro passado por referência de ponteiro para ponteiro. Representa o NO raiz da árvore binária.
+
+2 - p_elemento: Parâmetro passado por valor que representa o NOVO elemento a ser inserido na árbore binária.
+*/
+void inserir(NO **p_raiz, int p_elemento)
+{
+  if (*p_raiz == NULL) // Verifica se a árvore está vazia
+  {
+    // Aloca memória para a estrutura NO.
+    *p_raiz = (NO *)malloc(sizeof(NO));
+    // Atribui os valores para os campos da estrutura NO da árvore.
+    (*p_raiz)->esquerda = NULL;
+    (*p_raiz)->direita = NULL;
+    (*p_raiz)->numero = p_elemento;
+  }
+  else
+  {
+    if (p_elemento < ((*p_raiz)->numero))
+    {
+      // Inserir o novo elemento na sub-arvore a esquerda recursivamente.
+      inserir(&((*p_raiz)->esquerda), p_elemento);
+    }
+    else
+    {
+      // Inserir o novo elemento na sub-arvore a direita recursivamente.
+      inserir(&((*p_raiz)->direita), p_elemento);
+    }
+  }
+}
+
+/*
+Procedimento exibirPreOrdem:
+
+Exibe todos os elementos da árvore binária recursivamente na ordem: Pré-ordem.
+
+Parâmetros:
+
+1 - **p_raiz  : Parâmetro passado por valor que indica o ponteiro para o NO RAIZ da árvore binária.
+*/
+
+void exibirPreOrdem(NO *p_raiz)
+{
+  if (p_raiz != NULL)
+  {
+    getchar();
+    // Montar a árvore binária
+    printf("(%d)", p_raiz->numero);
+    // Exibir os elementos Pré-ordem
+    // gotoxy(p_coluna,28);
+    // printf("(%d)", p_raiz->numero);
+    exibirPreOrdem(p_raiz->esquerda);
+    exibirPreOrdem(p_raiz->direita);
+  }
+}
+
+/*
+Procedimento exibirPreOrdem:
+
+Exibe todos os elementos da árvore binária recursivamente na ordem: Em Ordem.
+
+Parâmetros:
+
+1 - **p_raiz  : Parâmetro passado por valor que indica o ponteiro para o NO RAIZ da árvore binária.
+*/
+
+void exibirEmOrdem(NO *p_raiz)
+{
+  if (p_raiz != NULL)
+  {
+    getchar();
+    exibirEmOrdem(p_raiz->esquerda);
+    printf("\n%d", p_raiz->numero);
+    exibirEmOrdem(p_raiz->direita);
+  }
+}
+
+/*
+Procedimento exibirPreOrdem:
+
+Exibe todos os elementos da árvore binária recursivamente na ordem: Pós-ordem.
+
+Parâmetros:
+
+1 - **p_raiz  : Parâmetro passado por valor que indica o ponteiro para o NO RAIZ da árvore binária.
+*/
+
+void exibirPosOrdem(NO *p_raiz)
+{
+  if (p_raiz != NULL)
+  {
+    getchar();
+    exibirPosOrdem(p_raiz->esquerda);
+    exibirPosOrdem(p_raiz->direita);
+    printf("\n%d", p_raiz->numero);
+  }
+}
