@@ -90,12 +90,10 @@ void menu()
       break;
 
     case 5:
-      // Para sair do programa deve-se
-      // desalocar toda memória alocada.
+      // Para sair do programa deve-se desalocar toda memória alocada.
       limparLinha(20);
       printf("Mensagem: Programa Finalizado.");
-      // Finaliza o programa com Sucesso.
-      exit(EXIT_SUCCESS);
+      exit(EXIT_SUCCESS); // Finaliza o programa com Sucesso.
 
     default:
       limparLinha(20);
