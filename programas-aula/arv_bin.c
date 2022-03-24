@@ -191,7 +191,7 @@ Procedimento exibirPreOrdem: Exibe todos os elementos da árvore binária recurs
 
 Parâmetros:
 
-1 - **p_raiz  : Parâmetro passado por valor que indica o ponteiro para o NO RAIZ da árvore binária.
+1 - *p_raiz  : Parâmetro passado por valor que indica o ponteiro para o NO RAIZ da árvore binária.
 */
 
 void exibirPreOrdem(NO *p_raiz)
@@ -209,7 +209,7 @@ Procedimento exibirPreOrdem: Exibe todos os elementos da árvore binária recurs
 
 Parâmetros:
 
-1 - **p_raiz: Parâmetro passado por valor que indica o ponteiro para o NO RAIZ da árvore binária.
+1 - *p_raiz: Parâmetro passado por valor que indica o ponteiro para o NO RAIZ da árvore binária.
 */
 
 void exibirEmOrdem(NO *p_raiz)
@@ -227,7 +227,7 @@ Procedimento exibirPreOrdem: Exibe todos os elementos da árvore binária recurs
 
 Parâmetros:
 
-1 - **p_raiz  : Parâmetro passado por valor que indica o ponteiro para o NO RAIZ da árvore binária.
+1 - *p_raiz  : Parâmetro passado por valor que indica o ponteiro para o NO RAIZ da árvore binária.
 */
 
 void exibirPosOrdem(NO *p_raiz)
