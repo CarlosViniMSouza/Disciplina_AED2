@@ -1,4 +1,4 @@
 git add -A
-git commit -m "programas-aula: arv_bin.c -> funcionando | 2021002252_01.c -> fixing"
+git commit -m "programas-aula: arvorebin_classroom.c -> alts add | arv_bin_test_exibir.c -> add & problems"
 git push
 git status

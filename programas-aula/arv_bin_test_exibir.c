@@ -40,7 +40,7 @@ typedef struct TNO
 void criarArvore(NO **p_raiz);
 void inserir(NO **p_raiz, int p_elemento, int coluna, int linha);
 void exibirPreOrdem(NO *p_raiz, int p_coluna);
-void exibirEmOrdem(NO *p_raiz);
+void exibirEmOrdem(NO *p_raiz, int p_coluna);
 void exibirPosOrdem(NO *p_raiz);
 void obterDados(int *p_elemento);
 void menu();
@@ -78,6 +78,7 @@ void menu()
     case 1:
       // Obter o valor de um novo dado: elemento
       // Parâmetro passado por Referência: &elemento
+      getchar();
       obterDados(&elemento);
       inserir(&raiz, elemento, 60, 2);
       break;
@@ -86,22 +87,24 @@ void menu()
       // Limpa a tela
       system("cls");
       // Exite todos os dados da árvore binaria em Pré-ordem.
+      getchar();
       exibirPreOrdem(raiz, 2);
       limparLinha(25);
       gotoxy(5, 30);
       printf("Pressione uma tecla para continuar.");
-      getchar();
       getchar();
 
       break;
 
     case 3:
       // Exite todos os dados da árvore binaria em Pré-ordem.
-      exibirEmOrdem(raiz);
+      getchar();
+      exibirEmOrdem(raiz, 2);
       break;
 
     case 4:
       // Exite todos os dados da árvore binaria em Pré-ordem.
+      getchar();
       exibirPosOrdem(raiz);
       break;
 
@@ -150,7 +153,7 @@ int ObterOpcaoMenu()
   gotoxy(40, 15);
   printf("************************************");
   gotoxy(40, 16);
-  printf("Entre com a opcao = ");
+  printf("\nEntre com a opcao = ");
   scanf("%d", &opcao);
   return opcao;
 }
@@ -256,13 +259,14 @@ Parâmetros:
            **p_raiz  : Parâmetro passado por valor que indica o ponteiro
                        para o NO RAIZ da árvore binária.
 */
-void exibirEmOrdem(NO *p_raiz)
+void exibirEmOrdem(NO *p_raiz, int p_coluna)
 {
   if (p_raiz != NULL)
   {
-    exibirEmOrdem(p_raiz->esquerda);
+    gotoxy(p_raiz->coluna, p_raiz->linha);
+    exibirEmOrdem(p_raiz->esquerda, p_coluna);
     printf("\n%d", p_raiz->numero);
-    exibirEmOrdem(p_raiz->direita);
+    exibirEmOrdem(p_raiz->direita, p_coluna);
   }
 }
 
@@ -277,6 +281,7 @@ void exibirPosOrdem(NO *p_raiz)
 {
   if (p_raiz != NULL)
   {
+    gotoxy(p_raiz->coluna, p_raiz->linha);
     exibirPosOrdem(p_raiz->esquerda);
     exibirPosOrdem(p_raiz->direita);
     printf("\n%d", p_raiz->numero);
