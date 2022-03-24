@@ -93,13 +93,18 @@ void menu()
       gotoxy(5, 30);
       printf("Pressione uma tecla para continuar.");
       getchar();
-
       break;
 
     case 3:
-      // Exite todos os dados da árvore binaria em Pré-ordem.
+      // Limpa tela
+      system("cls");
+      // Exite todos os dados da árvore binaria em Ordem.
       getchar();
       exibirEmOrdem(raiz, 2);
+      limparLinha(25);
+      gotoxy(5, 30);
+      printf("Pressione uma tecla para continuar.");
+      getchar();
       break;
 
     case 4:
@@ -133,7 +138,7 @@ int ObterOpcaoMenu()
   gotoxy(40, 5);
   printf("************************************");
   gotoxy(40, 6);
-  printf("*         Árvore Binária           *");
+  printf("*         Arvore Binaria           *");
   gotoxy(40, 7);
   printf("************************************");
   gotoxy(40, 8);
@@ -143,17 +148,17 @@ int ObterOpcaoMenu()
   gotoxy(40, 10);
   printf("* [1] - Inserir                    *");
   gotoxy(40, 11);
-  printf("* [2] - Exibir Pré-ordem           *");
+  printf("* [2] - Exibir Pre-ordem           *");
   gotoxy(40, 12);
   printf("* [3] - Exibir Em Ordem            *");
   gotoxy(40, 13);
-  printf("* [4] - Exibir Pós-Ordem           *");
+  printf("* [4] - Exibir Pos-Ordem           *");
   gotoxy(40, 14);
   printf("* [5] - Sair                       *");
   gotoxy(40, 15);
   printf("************************************");
   gotoxy(40, 16);
-  printf("\nEntre com a opcao = ");
+  printf("Entre com a opcao = ");
   scanf("%d", &opcao);
   return opcao;
 }
@@ -244,9 +249,6 @@ void exibirPreOrdem(NO *p_raiz, int p_coluna)
     // Montar a árvore binária
     gotoxy(p_raiz->coluna, p_raiz->linha);
     printf("(%d)", p_raiz->numero);
-    // Exibir os elementos Pré-ordem
-    // gotoxy(p_coluna,28);
-    // printf("(%d)", p_raiz->numero);
     exibirPreOrdem(p_raiz->esquerda, p_coluna + 4);
     exibirPreOrdem(p_raiz->direita, p_coluna + 4);
   }
@@ -264,9 +266,9 @@ void exibirEmOrdem(NO *p_raiz, int p_coluna)
   if (p_raiz != NULL)
   {
     gotoxy(p_raiz->coluna, p_raiz->linha);
-    exibirEmOrdem(p_raiz->esquerda, p_coluna);
-    printf("\n%d", p_raiz->numero);
-    exibirEmOrdem(p_raiz->direita, p_coluna);
+    printf("\n(%d)", p_raiz->numero);
+    exibirEmOrdem(p_raiz->esquerda, p_coluna + 4);
+    exibirEmOrdem(p_raiz->direita, p_coluna + 4);
   }
 }
 
@@ -281,9 +283,9 @@ void exibirPosOrdem(NO *p_raiz)
 {
   if (p_raiz != NULL)
   {
-    gotoxy(p_raiz->coluna, p_raiz->linha);
     exibirPosOrdem(p_raiz->esquerda);
     exibirPosOrdem(p_raiz->direita);
+    gotoxy(p_raiz->coluna, p_raiz->linha);
     printf("\n%d", p_raiz->numero);
   }
 }

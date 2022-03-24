@@ -1,4 +1,4 @@
 git add -A
-git commit -m "programas-aula: arvorebin_classroom.c -> alts add | arv_bin_test_exibir.c -> add & problems"
+git commit -m "programas-aula: arv_bin.c -> alts add | funcao exibirEmOrdem(): ok"
 git push
 git status
