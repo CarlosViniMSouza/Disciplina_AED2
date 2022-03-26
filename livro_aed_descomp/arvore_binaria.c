@@ -68,3 +68,37 @@ void destruirArvore(ArvBin *raiz)
   liberarNO(*raiz); // libera cada NO inserido
   free(raiz);       // remove a raiz da memória
 }
+
+int totalNO(ArvBin *raiz)
+{
+  if (raiz == NULL || *raiz == NULL)
+  {
+    return 0;
+  }
+  int total_esq = totalNO(&((*raiz)->esq));
+  int total_dir = totalNO(&((*raiz)->dir));
+  return (1 + total_esq + total_dir);
+}
+
+int altura(ArvBin *raiz)
+{
+  if (raiz == NULL)
+  {
+    return 0;
+  }
+  if (*raiz == NULL)
+  {
+    return 0;
+  }
+  int alt_esq = altura(&((*raiz)->esq));
+  int alt_dir = altura(&(*raiz)->dir);
+
+  if (alt_esq > alt_dir)
+  {
+    return (alt_esq + 1);
+  }
+  else
+  {
+    return (alt_dir + 1);
+  }
+}
