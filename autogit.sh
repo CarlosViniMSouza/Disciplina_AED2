@@ -1,4 +1,4 @@
 git add -A
-git commit -m "2021002252.c -> alts add & finished"
+git commit -m "arv_bin_seca.c -> alts add"
 git push
 git status
