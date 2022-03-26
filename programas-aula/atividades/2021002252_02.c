@@ -2,6 +2,8 @@
 Carlos Souza
 
 Matricula: 2021002252
+
+Turma III - Algoritmo e Estrutura de Dados II
 */
 
 #include <stdio.h>
@@ -17,13 +19,12 @@ typedef struct TNO
   struct TNO *direita;
   int coluna;
   int linha;
-  int alt;
 } NO; // NO: criacao de um novo tipo de dado chamado NO
 
 // OBS: A arvore sera chamada pelo seu No principal: raiz
 
 void criarArvore(NO **p_raiz);
-void inserir(NO **p_raiz, char p_elemento, int coluna, int linha, int alt);
+void inserir(NO **p_raiz, char p_elemento, int coluna, int linha);
 void exibirPreOrdem(NO *p_raiz, int p_coluna);
 void exibirEmOrdem(NO *p_raiz, int p_coluna);
 void exibirPosOrdem(NO *p_raiz, int p_coluna);
@@ -31,7 +32,7 @@ void obterDados(char *p_elemento);
 void gotoxy(int coluna, int linha);
 void limparLinha(int linha);
 int contarNo(NO *raiz);
-int calcularAltura(NO *raiz, int *altAltura);
+int calcularAltura(NO *raiz);
 void menu();
 int ObterOpcaoMenu();
 void configurarAmbiente();
@@ -46,10 +47,10 @@ int main()
 void menu()
 {
   int opcao;
+  int qtdNO, altura = 0;
   NO *raiz;
   char elemento = '.';
-  int qtdNO = 0;
-  int altAltura = 0;
+
   criarArvore(&raiz);
 
   for (;;)
@@ -61,7 +62,7 @@ void menu()
     case 1:
       getchar();
       obterDados(&elemento);
-      inserir(&raiz, elemento, 60, 2, 0);
+      inserir(&raiz, elemento, 60, 2);
       break;
 
     case 2:
@@ -97,9 +98,10 @@ void menu()
     case 5:
       system("cls");
       qtdNO = contarNo(raiz);
-      gotoxy(5, 25);
+      limparLinha(25);
+      gotoxy(40, 16);
       printf("Quantidade de NOs = %d", qtdNO);
-      gotoxy(5, 30);
+      gotoxy(40, 18);
       printf("Pressione uma tecla para continuar.");
       getchar();
       getchar();
@@ -107,10 +109,11 @@ void menu()
 
     case 6:
       system("cls");
-      calcularAltura(raiz, &altAltura);
-      gotoxy(5, 25);
-      printf("A altura da arvore eh = %d", altAltura);
-      gotoxy(5, 30);
+      altura = calcularAltura(raiz);
+      limparLinha(25);
+      gotoxy(40, 16);
+      printf("A altura da arvore = %d", (altura - 1));
+      gotoxy(40, 18);
       printf("Pressione uma tecla para continuar.");
       getchar();
       getchar();
@@ -192,7 +195,7 @@ void criarArvore(NO **p_raiz)
   *p_raiz = NULL;
 }
 
-void inserir(NO **p_raiz, char p_elemento, int coluna, int linha, int alt)
+void inserir(NO **p_raiz, char p_elemento, int coluna, int linha)
 {
 
   if (*p_raiz == NULL) // Verifica se a arvore esta vazia
@@ -208,19 +211,18 @@ void inserir(NO **p_raiz, char p_elemento, int coluna, int linha, int alt)
     // Somente para visualizar os elementos da arvore binaria na tela
     (*p_raiz)->coluna = coluna;
     (*p_raiz)->linha = linha;
-    (*p_raiz)->alt = alt;
   }
   else
   {
     if (p_elemento < ((*p_raiz)->letra))
     {
       // Inserir o novo elemento na sub-arvore a esquerda recursivamente.
-      inserir(&((*p_raiz)->esquerda), p_elemento, coluna - 15, linha + 2, alt + 1);
+      inserir(&((*p_raiz)->esquerda), p_elemento, coluna - 15, linha + 2);
     }
     else
     {
       // Inserir o novo elemento na sub-arvore a direita recursivamente.
-      inserir(&((*p_raiz)->direita), p_elemento, coluna + 15, linha + 2, alt + 1);
+      inserir(&((*p_raiz)->direita), p_elemento, coluna + 15, linha + 2);
     }
   }
 }
@@ -273,32 +275,31 @@ int contarNo(NO *p_raiz)
   }
 }
 
-int calcularAltura(NO *p_raiz, int *altAltura)
+int calcularAltura(NO *p_raiz)
 {
+  int altEsq, altDir;
+
   if (p_raiz == NULL)
   {
     return 0;
   }
   else
   {
+    altEsq = 1 + calcularAltura(p_raiz->esquerda);
+    altDir = 1 + calcularAltura(p_raiz->direita);
 
-    if (p_raiz->alt > (*altAltura))
+    if (altEsq >= altDir)
     {
-      (*altAltura) = p_raiz->alt;
-    }
-
-    if (p_raiz->esquerda >= p_raiz->direita)
-    {
-      return calcularAltura(p_raiz->esquerda, altAltura);
+      return altEsq;
     }
     else
     {
-      return calcularAltura(p_raiz->direita, altAltura);
+      return altDir;
     }
   }
 }
 
-// Procedimento para configuar o ambiente do programa
+// Procedimento para configurar o ambiente do programa
 void configurarAmbiente()
 {
   system("cls");
