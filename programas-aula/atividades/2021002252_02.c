@@ -288,13 +288,17 @@ int calcularAltura(NO *p_raiz)
     altEsq = 1 + calcularAltura(p_raiz->esquerda);
     altDir = 1 + calcularAltura(p_raiz->direita);
 
-    if (altEsq >= altDir)
+    if (altEsq > altDir)
     {
-      return altEsq;
+      return 1 + calcularAltura(p_raiz->esquerda);
+    }
+    if (altDir > altEsq)
+    {
+      return 1 + calcularAltura(p_raiz->direita);
     }
     else
     {
-      return altDir;
+      return 1 + calcularAltura(p_raiz->direita);
     }
   }
 }
