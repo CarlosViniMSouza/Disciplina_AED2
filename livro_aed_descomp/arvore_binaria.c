@@ -102,3 +102,31 @@ int altura(ArvBin *raiz)
     return (alt_dir + 1);
   }
 }
+
+void ExibirPreOrdem(ArvBin *raiz)
+{
+  if (raiz == NULL)
+  {
+    return 0;
+  }
+  if (*raiz != NULL)
+  {
+    printf("(%d)\n", (*raiz)->info);
+    ExibirPreOrdem(&((raiz)->esq));
+    ExibirPreOrdem(&((*raiz)->dir));
+  }
+}
+
+void ExibirEmOrdem(ArvBin *raiz)
+{
+  if (raiz == NULL)
+  {
+    return 0;
+  }
+  if (*raiz != NULL)
+  {
+    ExibirEmOrdem(&((raiz)->esq));
+    printf("(%d)\n", (*raiz)->info);
+    ExibirEmOrdem(&((*raiz)->dir));
+  }
+}
