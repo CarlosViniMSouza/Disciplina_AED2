@@ -8,43 +8,33 @@ Matricula: 2021002252
 #include <conio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <locale.h>
 #include <windows.h>
 
-// Criar a estrutura NO
 typedef struct TNO
 {
-  // Dado do NO
   char letra;
-  // Ponteiro para o pr�ximo NO da sub-arvore esquerda
   struct TNO *esquerda;
-  // Ponteiro para o pr�ximo NO da sub-arvore direita
   struct TNO *direita;
-  // Somente para vizualizar melhor a exibi��o dos elementos da �rvore bin�ria
   int coluna;
   int linha;
   int alt;
 } NO; // NO: criacao de um novo tipo de dado chamado NO
 
-// ATEN��O
-// *  : Significa um ponteiro.
-// ** : Significa um ponteiro que aponta
-//      para outro ponteiro.
+// OBS: A arvore sera chamada pelo seu No principal: raiz
 
-// OBS: A �rvore ser� chamada pelo seu N� principal: raiz
 void criarArvore(NO **p_raiz);
 void inserir(NO **p_raiz, char p_elemento, int coluna, int linha, int alt);
 void exibirPreOrdem(NO *p_raiz, int p_coluna);
-void exibirEmOrdem(NO *p_raiz);
-void exibirPosOrdem(NO *p_raiz);
+void exibirEmOrdem(NO *p_raiz, int p_coluna);
+void exibirPosOrdem(NO *p_raiz, int p_coluna);
 void obterDados(char *p_elemento);
-void menu();
-void configurarAmbiente();
 void gotoxy(int coluna, int linha);
 void limparLinha(int linha);
-int ObterOpcaoMenu();
 int contarNo(NO *raiz);
 int calcularAltura(NO *raiz, int *altAltura);
+void menu();
+int ObterOpcaoMenu();
+void configurarAmbiente();
 
 // Programa Principal
 int main()
@@ -53,7 +43,6 @@ int main()
   menu();
 } // Fim programa.
 
-// Processa a op��o selecionada no Menu
 void menu()
 {
   int opcao;
@@ -64,41 +53,45 @@ void menu()
   criarArvore(&raiz);
 
   for (;;)
-  { // Indica uma repeti��o (loop) INFINITO
-    // Limpa a tela
+  {
     system("cls");
     opcao = ObterOpcaoMenu();
     switch (opcao)
     {
     case 1:
-      // Obter o valor de um novo dado: elemento
-      // Par�metro passado por Refer�ncia: &elemento
       getchar();
       obterDados(&elemento);
       inserir(&raiz, elemento, 60, 2, 0);
       break;
 
     case 2:
-      // Limpa a tela
       system("cls");
-      // Exite todos os dados da �rvore binaria em Pr�-ordem.
       exibirPreOrdem(raiz, 2);
       limparLinha(25);
       gotoxy(5, 30);
       printf("Pressione uma tecla para continuar.");
       getchar();
       getchar();
-
       break;
 
     case 3:
-      // Exite todos os dados da �rvore binaria em Pr�-ordem.
-      exibirEmOrdem(raiz);
+      system("cls");
+      exibirEmOrdem(raiz, 2);
+      limparLinha(25);
+      gotoxy(5, 30);
+      printf("Pressione uma tecla para continuar.");
+      getchar();
+      getchar();
       break;
 
     case 4:
-      // Exite todos os dados da �rvore binaria em Pr�-ordem.
-      exibirPosOrdem(raiz);
+      system("cls");
+      exibirPosOrdem(raiz, 2);
+      limparLinha(25);
+      gotoxy(5, 30);
+      printf("Pressione uma tecla para continuar.");
+      getchar();
+      getchar();
       break;
 
     case 5:
@@ -115,7 +108,8 @@ void menu()
     case 6:
       system("cls");
       calcularAltura(raiz, &altAltura);
-      limparLinha(25);
+      gotoxy(5, 25);
+      printf("A altura da arvore eh = %d", altAltura);
       gotoxy(5, 30);
       printf("Pressione uma tecla para continuar.");
       getchar();
@@ -123,29 +117,19 @@ void menu()
       break;
 
     case 7:
-      // Para sair do programa deve-se
-      // desalocar toda mem�ria alocada.
       limparLinha(20);
       gotoxy(5, 20);
       printf("Mensagem: Programa Finalizado.");
-      // Finaliza o programa com Sucesso.
-      exit(EXIT_SUCCESS);
+      exit(EXIT_SUCCESS); // Finaliza o programa com Sucesso.
 
     default:
       limparLinha(20);
       gotoxy(5, 20);
       printf("Mensagem: Opcao Invalida.");
     } // switch
-
-    /*
-    5 -> contarNo()
-      6 -> calcularAlturaArvore()
-      7 -> sair()
-  */
-  } // for
+  }   // for
 }
 
-// Monta o Menu e obtem a op��o selecionada
 int ObterOpcaoMenu()
 {
   int opcao;
@@ -168,9 +152,9 @@ int ObterOpcaoMenu()
   gotoxy(40, 13);
   printf("* [4] - Exibir Pos-Ordem           *");
   gotoxy(40, 14);
-  printf("* [5] - Contagem de Nos	         *");
+  printf("* [5] - Contagem de Nos	           *");
   gotoxy(40, 15);
-  printf("* [6] - Calcular Altura	         *");
+  printf("* [6] - Calcular Altura	           *");
   gotoxy(40, 16);
   printf("* [7] - Sair                       *");
   gotoxy(40, 17);
@@ -190,7 +174,6 @@ Par�metros:
 */
 void obterDados(char *p_elemento)
 {
-  // Limpar a tela
   system("cls");
   gotoxy(40, 5);
   printf("************************************");
@@ -203,39 +186,26 @@ void obterDados(char *p_elemento)
   scanf("%c", p_elemento);
 }
 
-/*
-Procedimento criarArvore: Inicializa uma �rvore bin�ria vazia
-Par�metros:
-           1 - **p_raiz  : Par�metro passado por refer�ncia de ponteiro para ponteiro.
-                           Representa o NO raiz da �rvore bin�ria.
-*/
 void criarArvore(NO **p_raiz)
 {
-  // OBS: NULL � um valor que indica
-  // um endere�o de mem�ria vazio v�lido.
+  // OBS: NULL eh um valor que indica um endereco de memoria vazio valido.
   *p_raiz = NULL;
 }
 
-/*
-Procedimento inserir: insere um novo elemento na �rvore bin�ria recursivamente.
-Par�metros:
-           1 - **p_raiz  : Par�metro passado por refer�ncia de ponteiro para ponteiro.
-                           Representa o NO raiz da �rvore bin�ria.
-           2 - p_elemento: Par�metro passado por valor que representa o NOVO elemento
-                           a ser inserido na �rbore bin�ria.
-*/
 void inserir(NO **p_raiz, char p_elemento, int coluna, int linha, int alt)
 {
 
-  if (*p_raiz == NULL) // Verifica se a �rvore est� vazia
+  if (*p_raiz == NULL) // Verifica se a arvore esta vazia
   {
-    // Aloca mem�ria para a estrutura NO.
+    // Aloca memoria para a estrutura NO.
     *p_raiz = (NO *)malloc(sizeof(NO));
-    // Atribui os valores para os campos da estrutura NO da �rvore.
+
+    // Atribui os valores para os campos da estrutura NO da arvore.
     (*p_raiz)->esquerda = NULL;
     (*p_raiz)->direita = NULL;
     (*p_raiz)->letra = p_elemento;
-    // Somente para visualizar os elementos da �rvore bin�ria na tela
+
+    // Somente para visualizar os elementos da arvore binaria na tela
     (*p_raiz)->coluna = coluna;
     (*p_raiz)->linha = linha;
     (*p_raiz)->alt = alt;
@@ -255,57 +225,38 @@ void inserir(NO **p_raiz, char p_elemento, int coluna, int linha, int alt)
   }
 }
 
-/*
-Procedimento exibirPreOrdem: Exibe todos os elementos da �rvore bin�ria recursivamente na ordem: Pr�-ordem.
-Par�metros:
-           **p_raiz  : Par�metro passado por valor que indica o ponteiro para o NO RAIZ da �rvore bin�ria.
-*/
-
 void exibirPreOrdem(NO *p_raiz, int p_coluna)
 {
   if (p_raiz != NULL)
   {
-    // Montar a �rvore bin�ria
+    // Montar a arvore binaria
     gotoxy(p_raiz->coluna, p_raiz->linha);
     printf("(%c)", p_raiz->letra);
-    // Exibir os elementos Pr�-ordem
-    // gotoxy(p_coluna,28);
-    // printf("(%d)", p_raiz->numero);
     exibirPreOrdem(p_raiz->esquerda, p_coluna + 4);
     exibirPreOrdem(p_raiz->direita, p_coluna + 4);
   }
 }
 
-/*
-Procedimento exibirPreOrdem: Exibe todos os elementos da �rvore bin�ria recursivamente
-                             na ordem: Em Ordem.
-Par�metros:
-           **p_raiz  : Par�metro passado por valor que indica o ponteiro
-                       para o NO RAIZ da �rvore bin�ria.
-*/
-void exibirEmOrdem(NO *p_raiz)
+void exibirEmOrdem(NO *p_raiz, int p_coluna)
 {
   if (p_raiz != NULL)
   {
-    exibirEmOrdem(p_raiz->esquerda);
+    // Montar a arvore binaria
+    exibirEmOrdem(p_raiz->esquerda, p_coluna + 4);
+    gotoxy(p_raiz->coluna, p_raiz->linha);
     printf("(%c)", p_raiz->letra);
-    exibirEmOrdem(p_raiz->direita);
+    exibirEmOrdem(p_raiz->direita, p_coluna + 4);
   }
 }
 
-/*
-Procedimento exibirPreOrdem: Exibe todos os elementos da �rvore bin�ria recursivamente
-                             na ordem: P�s-ordem.
-Par�metros:
-           **p_raiz  : Par�metro passado por valor que indica o ponteiro
-                       para o NO RAIZ da �rvore bin�ria.
-*/
-void exibirPosOrdem(NO *p_raiz)
+void exibirPosOrdem(NO *p_raiz, int p_coluna)
 {
   if (p_raiz != NULL)
   {
-    exibirPosOrdem(p_raiz->esquerda);
-    exibirPosOrdem(p_raiz->direita);
+    // Montar a arvore binaria
+    exibirPosOrdem(p_raiz->esquerda, p_coluna + 4);
+    exibirPosOrdem(p_raiz->direita, p_coluna + 4);
+    gotoxy(p_raiz->coluna, p_raiz->linha);
     printf("(%c)", p_raiz->letra);
   }
 }
@@ -335,29 +286,23 @@ int calcularAltura(NO *p_raiz, int *altAltura)
     {
       (*altAltura) = p_raiz->alt;
     }
-    calcularAltura(p_raiz->esquerda, altAltura);
-    calcularAltura(p_raiz->direita, altAltura);
 
-    gotoxy(5, 25);
-    printf("A altura da arvore eh = %d", (*altAltura));
+    if (p_raiz->esquerda >= p_raiz->direita)
+    {
+      return calcularAltura(p_raiz->esquerda, altAltura);
+    }
+    else
+    {
+      return calcularAltura(p_raiz->direita, altAltura);
+    }
   }
 }
 
-//****************************************
-//** Fun��es e Procedimentos Auxiliares **
-//****************************************
-
-// Procedimento para configuar o
-// ambiente do programa
+// Procedimento para configuar o ambiente do programa
 void configurarAmbiente()
 {
-  // Limpa a tela
   system("cls");
-  // Define o idioma dos textos para Portugues
-  setlocale(LC_ALL, "Portuguese");
-  // Alterar a cor do fundo da tela
-  // e a cor da fonte (fundo azul e fonte branca).
-  system("color 1F");
+  system("color 2F");
 }
 
 // Procedimento para posicionar o cursor na coordenada X,Y
