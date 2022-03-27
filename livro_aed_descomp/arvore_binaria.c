@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct ArvBin
+typedef struct NO
 {
   int info;
-  struct ArvBin *ArvBin; // necessario para a funcao liberarArvBin()
-  struct ArvBin *esq;
-  struct ArvBin *dir;
+  struct NO *esq;
+  struct NO *dir;
 } ArvBin;
 
 // Referente a Arvore como um todo
 ArvBin *criarArvore();
 void destruirArvore(ArvBin *raiz);
+void liberarArvBin(struct NO *no);
 
 // Referente aos elementos (ArvBins)
 void liberarArvBin(ArvBin *ArvBin);
@@ -44,9 +44,9 @@ ArvBin *criarArvore()
   return raiz;
 }
 
-void liberarArvBin(ArvBin *ArvBin)
+void liberarArvBin(struct NO *no)
 {
-  if (ArvBin == NULL)
+  if (no == NULL)
   {
     return 0;
   }
@@ -55,8 +55,8 @@ void liberarArvBin(ArvBin *ArvBin)
   // da memoria, e o 'ArvBin == NULL' para a funcao
   liberarArvBin(raiz->esq);
   liberarArvBin(raiz->dir);
-  free(ArvBin);
-  ArvBin == NULL;
+  free(no);
+  no == NULL;
 }
 
 void destruirArvore(ArvBin *raiz)
@@ -165,4 +165,37 @@ int inserir(ArvBin *raiz, int valor)
       inserir(&((*raiz)->dir), valor);
     }
   }
+}
+
+int remover(ArvBin *raiz, int valor)
+{
+  return 0;
+  // Sera dificil de implementar
+}
+
+int consultar(ArvBin *raiz, int valor)
+{
+  struct NO *atual = *raiz;
+
+  if (raiz == NULL)
+  {
+    return 0;
+  }
+  while (atual != NULL)
+  {
+    if (valor == atual->info)
+    {
+      return 1;
+    }
+    if (valor > atual->info)
+    {
+      atual = atual->dir;
+    }
+    else
+    {
+      atual = atual->esq;
+    }
+  }
+
+  return 0;
 }
