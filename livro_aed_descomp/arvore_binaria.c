@@ -10,11 +10,10 @@ typedef struct NO
 
 // Referente a Arvore como um todo
 ArvBin *criarArvore();
-void destruirArvore(ArvBin *raiz);
 void liberarArvBin(struct NO *no);
+void destruirArvore(ArvBin *raiz);
 
-// Referente aos elementos (ArvBins)
-void liberarArvBin(ArvBin *ArvBin);
+// Referente aos elementos (NOs)
 int inserir(ArvBin *raiz, int valor);
 int remover(ArvBin *raiz, int valor);
 int consultar(ArvBin *raiz, int valor);
@@ -37,8 +36,6 @@ ArvBin *criarArvore()
   ArvBin *raiz = (ArvBin *)malloc(sizeof(ArvBin));
   if (raiz != NULL)
   {
-    // O ponteiro da ArvBinssa raiz irá apontar p/ endereco NULL
-    // ArvBinssa raiz terá um local para onde apontar apos ser criada
     *raiz = NULL;
   }
   return raiz;
@@ -50,9 +47,6 @@ void liberarArvBin(struct NO *no)
   {
     return 0;
   }
-  // Aqui, as funcoes recursivas irao chamar
-  // todos os elementos para serem liberados
-  // da memoria, e o 'ArvBin == NULL' para a funcao
   liberarArvBin(raiz->esq);
   liberarArvBin(raiz->dir);
   free(no);
@@ -65,84 +59,8 @@ void destruirArvore(ArvBin *raiz)
   {
     return 0;
   }
-  liberarArvBin(*raiz); // libera cada ArvBin inserido
+  liberarArvBin(*raiz); // libera cada NO inserido
   free(raiz);           // remove a raiz da memória
-}
-
-int totalArvBin(ArvBin *raiz)
-{
-  if (raiz == NULL || *raiz == NULL)
-  {
-    return 0;
-  }
-  int total_esq = totalArvBin(&((*raiz)->esq));
-  int total_dir = totalArvBin(&((*raiz)->dir));
-  return (1 + total_esq + total_dir);
-}
-
-int altura(ArvBin *raiz)
-{
-  if (raiz == NULL)
-  {
-    return 0;
-  }
-  if (*raiz == NULL)
-  {
-    return 0;
-  }
-  int alt_esq = altura(&((*raiz)->esq));
-  int alt_dir = altura(&(*raiz)->dir);
-
-  if (alt_esq > alt_dir)
-  {
-    return (alt_esq + 1);
-  }
-  else
-  {
-    return (alt_dir + 1);
-  }
-}
-
-void ExibirPreOrdem(ArvBin *raiz)
-{
-  if (raiz == NULL)
-  {
-    return 0;
-  }
-  if (*raiz != NULL)
-  {
-    printf("(%d)\n", (*raiz)->info);
-    ExibirPreOrdem(&((raiz)->esq));
-    ExibirPreOrdem(&((*raiz)->dir));
-  }
-}
-
-void ExibirEmOrdem(ArvBin *raiz)
-{
-  if (raiz == NULL)
-  {
-    return 0;
-  }
-  if (*raiz != NULL)
-  {
-    ExibirEmOrdem(&((raiz)->esq));
-    printf("(%d)\n", (*raiz)->info);
-    ExibirEmOrdem(&((*raiz)->dir));
-  }
-}
-
-void ExibirPosOrdem(ArvBin *raiz)
-{
-  if (raiz == NULL)
-  {
-    return 0;
-  }
-  if (*raiz != NULL)
-  {
-    ExibirPosOrdem(&((raiz)->esq));
-    ExibirPosOrdem(&((*raiz)->dir));
-    printf("(%d)\n", (*raiz)->info);
-  }
 }
 
 int inserir(ArvBin *raiz, int valor)
@@ -198,4 +116,80 @@ int consultar(ArvBin *raiz, int valor)
   }
 
   return 0;
+}
+
+int altura(ArvBin *raiz)
+{
+  if (raiz == NULL)
+  {
+    return 0;
+  }
+  if (*raiz == NULL)
+  {
+    return 0;
+  }
+  int alt_esq = altura(&((*raiz)->esq));
+  int alt_dir = altura(&(*raiz)->dir);
+
+  if (alt_esq > alt_dir)
+  {
+    return (alt_esq + 1);
+  }
+  else
+  {
+    return (alt_dir + 1);
+  }
+}
+
+int totalArvBin(ArvBin *raiz)
+{
+  if (raiz == NULL || *raiz == NULL)
+  {
+    return 0;
+  }
+  int total_esq = totalArvBin(&((*raiz)->esq));
+  int total_dir = totalArvBin(&((*raiz)->dir));
+  return (1 + total_esq + total_dir);
+}
+
+void ExibirPreOrdem(ArvBin *raiz)
+{
+  if (raiz == NULL)
+  {
+    return 0;
+  }
+  if (*raiz != NULL)
+  {
+    printf("(%d)\n", (*raiz)->info);
+    ExibirPreOrdem(&((raiz)->esq));
+    ExibirPreOrdem(&((*raiz)->dir));
+  }
+}
+
+void ExibirEmOrdem(ArvBin *raiz)
+{
+  if (raiz == NULL)
+  {
+    return 0;
+  }
+  if (*raiz != NULL)
+  {
+    ExibirEmOrdem(&((raiz)->esq));
+    printf("(%d)\n", (*raiz)->info);
+    ExibirEmOrdem(&((*raiz)->dir));
+  }
+}
+
+void ExibirPosOrdem(ArvBin *raiz)
+{
+  if (raiz == NULL)
+  {
+    return 0;
+  }
+  if (*raiz != NULL)
+  {
+    ExibirPosOrdem(&((raiz)->esq));
+    ExibirPosOrdem(&((*raiz)->dir));
+    printf("(%d)\n", (*raiz)->info);
+  }
 }
