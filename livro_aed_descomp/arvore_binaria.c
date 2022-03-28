@@ -66,7 +66,49 @@ void destruirArvore(ArvBin *raiz)
 
 int removerArvBin(ArvBin *raiz, int valor)
 {
-  // Criando ...
+  if (raiz == NULL)
+  {
+    return 0;
+  }
+
+  struct NO *ant = NULL;
+  struct NO *atual = NULL;
+
+  while (atual != NULL)
+  {
+    if (valor == atual->info)
+    {
+      if (atual == *raiz)
+      {
+        *raiz = remover(atual);
+      }
+      else
+      {
+        if (ant->dir == atual)
+        {
+          ant->dir = remover(atual);
+        }
+        else
+        {
+          ant->esq = remover(atual);
+        }
+      }
+
+      return 1;
+    }
+
+    ant = atual;
+    if (valor > atual->info)
+    {
+      atual = atual->dir;
+    }
+    else
+    {
+      atual = atual->esq;
+    }
+  }
+
+  return 0;
 }
 
 int inserir(ArvBin *raiz, int valor)
