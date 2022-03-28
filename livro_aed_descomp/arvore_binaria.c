@@ -12,10 +12,11 @@ typedef struct NO
 ArvBin *criarArvore();
 void liberarArvBin(struct NO *no);
 void destruirArvore(ArvBin *raiz);
+int removerArvBin(ArvBin *raiz, int valor);
 
 // Referente aos elementos (NOs)
 int inserir(ArvBin *raiz, int valor);
-int remover(ArvBin *raiz, int valor);
+int remover(struct NO *atual);
 int consultar(ArvBin *raiz, int valor);
 int altura(ArvBin *raiz);
 int totalArvBin(ArvBin *raiz);
@@ -63,6 +64,11 @@ void destruirArvore(ArvBin *raiz)
   free(raiz);           // remove a raiz da memória
 }
 
+int removerArvBin(ArvBin *raiz, int valor)
+{
+  // Criando ...
+}
+
 int inserir(ArvBin *raiz, int valor)
 {
   if (*raiz == NULL)
@@ -85,10 +91,35 @@ int inserir(ArvBin *raiz, int valor)
   }
 }
 
-int remover(ArvBin *raiz, int valor)
+int remover(struct NO *atual)
 {
-  return 0;
-  // Sera dificil de implementar
+  struct NO *no1, *no2;
+
+  if (atual->esq == NULL)
+  {
+    no2 = atual->dir;
+    free(atual);
+    return no2;
+  }
+
+  no1 = atual;
+  no2 = atual->esq;
+
+  while (no2->dir != NULL)
+  {
+    no1 = no2;
+    no2 = no2->dir;
+  }
+
+  if (no1 != atual)
+  {
+    no1->dir = no2->esq;
+    no2->esq = atual->esq;
+  }
+
+  no2->dir = atual->dir;
+  free(atual);
+  return no2;
 }
 
 int consultar(ArvBin *raiz, int valor)
