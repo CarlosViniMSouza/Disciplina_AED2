@@ -1,4 +1,4 @@
 git add -A
-git commit -m "arvore_binaria.c -> removerArvBin() add"
+git commit -m "livro_ED_usando_C folder -> add"
 git push
 git status
