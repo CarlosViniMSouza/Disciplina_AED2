@@ -13,3 +13,7 @@
 /*
 4. Estruturas em C
 */
+
+// OBS.: Erro nas imagens e código fora do padrão.
+
+// A parte de árvore binária deverá ser descartada!

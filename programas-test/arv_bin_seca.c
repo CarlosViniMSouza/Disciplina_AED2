@@ -25,6 +25,7 @@ void exibirEmOrdem(NO *p_raiz);
 void exibirPosOrdem(NO *p_raiz);
 int contarNo(NO *p_raiz);
 int calcularAltura(NO *p_raiz);
+int contarFolha(NO *p_raiz);
 void menu();
 int ObterOpcaoMenu();
 
@@ -37,7 +38,7 @@ void menu()
 {
   int opcao;
   NO *raiz;
-  int elemento, quantNo, altura = 0;
+  int elemento, quantNo, altura, folha = 0;
 
   // Inicializar o ponteiro da árvore binária
   criarArvore(&raiz);
@@ -97,12 +98,21 @@ void menu()
       system("cls");
       // Exibe a altura da nossa arvore
       altura = calcularAltura(raiz);
-      printf("\nA altura da arvore = %d", (altura - 1));
+      printf("\nA altura da arvore = %d", altura);
       getchar();
       getchar();
       break;
 
     case 7:
+      system("cls");
+      // Exibe a quantidade de folhas existentes na arvore
+      folha = contarFolha(raiz);
+      printf("A quantidade de folhas = %d", folha);
+      getchar();
+      getchar();
+      break;
+
+    case 8:
       // Para sair do programa deve-se desalocar toda memória alocada.
       system("cls");
       printf("Mensagem: Programa Finalizado.");
@@ -128,7 +138,8 @@ int ObterOpcaoMenu()
   printf("* [4] - Exibir Pos-Ordem           *\n");
   printf("* [5] - Calcular quant NOs         *\n");
   printf("* [6] - Calcular altura            *\n");
-  printf("* [7] - Sair                       *\n");
+  printf("* [7] - Calcular quant Folhas      *\n");
+  printf("* [8] - Sair                       *\n");
   printf("************************************\n");
   printf("Entre com a opcao = ");
   scanf("%d", &opcao);
@@ -224,28 +235,38 @@ int contarNo(NO *p_raiz)
 
 int calcularAltura(NO *p_raiz)
 {
-  int altEsq, altDir;
+  if (p_raiz == NULL || (p_raiz->esquerda) == NULL && (p_raiz->direita) == NULL)
+  {
+    return 0;
+  }
+  else
+  {
+    if (calcularAltura(p_raiz->esquerda) > calcularAltura(p_raiz->direita))
+    {
+      return 1 + calcularAltura(p_raiz->esquerda);
+    }
+    else
+    {
+      return 1 + calcularAltura(p_raiz->direita);
+    }
+  }
+}
 
+int contarFolha(NO *p_raiz)
+{
   if (p_raiz == NULL)
   {
     return 0;
   }
   else
   {
-    altEsq = 1 + calcularAltura(p_raiz->esquerda);
-    altDir = 1 + calcularAltura(p_raiz->direita);
-
-    if (altEsq > altDir)
+    if (p_raiz == NULL || (p_raiz->esquerda) == NULL && (p_raiz->direita) == NULL)
     {
-      return 1 + calcularAltura(p_raiz->esquerda);
-    }
-    if (altDir > altEsq)
-    {
-      return 1 + calcularAltura(p_raiz->direita);
+      return 1;
     }
     else
     {
-      return 1 + calcularAltura(p_raiz->direita);
+      return contarFolha(p_raiz->esquerda) + contarFolha(p_raiz->direita);
     }
   }
 }

@@ -169,11 +169,11 @@ int ObterOpcaoMenu()
   gotoxy(40, 13);
   printf("* [4] - Exibir Pos-Ordem           *");
   gotoxy(40, 14);
-  printf("* [5] - Contagem de Nos	           *");
+  printf("* [5] - Contagem de Nos            *");
   gotoxy(40, 15);
-  printf("* [6] - Calcular Altura	           *");
+  printf("* [6] - Calcular Altura            *");
   gotoxy(40, 16);
-  printf("* [7] - Contagem de Folhas	    *");
+  printf("* [7] - Contagem de Folhas         *");
   gotoxy(40, 17);
   printf("* [8] - Sair                       *");
   gotoxy(40, 18);
@@ -186,10 +186,8 @@ int ObterOpcaoMenu()
 
 /*
 Procedimento obterDados: Obtem o valor de um dado (elemento)
-Par�metros:
-           1 - p_elemento : Par�metro passado por refer�ncia para obter o valor de
-
-                            um elemento.
+Parametros:
+           1 - p_elemento : Parametro passado por referencia para obter o valor de um elemento.
 */
 void obterDados(char *p_elemento)
 {
@@ -362,4 +360,4 @@ void limparLinha(int linha)
   }
 }
 
-// Atividade 03
+// Atividade 03 -> feita
