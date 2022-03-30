@@ -31,8 +31,10 @@ void exibirPosOrdem(NO *p_raiz, int p_coluna);
 void obterDados(char *p_elemento);
 void gotoxy(int coluna, int linha);
 void limparLinha(int linha);
-int contarNo(NO *raiz);
-int calcularAltura(NO *raiz);
+int contarNo(NO *p_raiz);
+int maior(int valor1, int valor2);
+int calcularAltura(NO *p_raiz);
+int contarFolha(NO *p_raiz);
 void menu();
 int ObterOpcaoMenu();
 void configurarAmbiente();
@@ -47,7 +49,7 @@ int main()
 void menu()
 {
   int opcao;
-  int qtdNO, altura = 0;
+  int qtdNO, altura, folha = 0;
   NO *raiz;
   char elemento = '.';
 
@@ -112,7 +114,7 @@ void menu()
       altura = calcularAltura(raiz);
       limparLinha(25);
       gotoxy(40, 16);
-      printf("A altura da arvore = %d", (altura - 1));
+      printf("A altura da arvore = %d", altura);
       gotoxy(40, 18);
       printf("Pressione uma tecla para continuar.");
       getchar();
@@ -120,6 +122,18 @@ void menu()
       break;
 
     case 7:
+      system("cls");
+      folha = contarFolha(raiz);
+      limparLinha(25);
+      gotoxy(40, 16);
+      printf("Quantidade de Folhas = %d", folha);
+      gotoxy(40, 18);
+      printf("Pressione uma tecla para continuar.");
+      getchar();
+      getchar();
+      break;
+
+    case 8:
       limparLinha(20);
       gotoxy(5, 20);
       printf("Mensagem: Programa Finalizado.");
@@ -159,10 +173,12 @@ int ObterOpcaoMenu()
   gotoxy(40, 15);
   printf("* [6] - Calcular Altura	           *");
   gotoxy(40, 16);
-  printf("* [7] - Sair                       *");
+  printf("* [7] - Contagem de Folhas	    *");
   gotoxy(40, 17);
-  printf("************************************");
+  printf("* [8] - Sair                       *");
   gotoxy(40, 18);
+  printf("************************************");
+  gotoxy(40, 20);
   printf("Entre com a opcao = ");
   scanf("%d", &opcao);
   return opcao;
@@ -275,30 +291,45 @@ int contarNo(NO *p_raiz)
   }
 }
 
+int maior(int valor1, int valor2)
+{
+  if (valor1 > valor2)
+  {
+    return valor1;
+  }
+  else
+  {
+    return valor2;
+  }
+}
+
 int calcularAltura(NO *p_raiz)
 {
-  int altEsq, altDir;
+  if (p_raiz == NULL || (p_raiz->esquerda) == NULL && (p_raiz->direita) == NULL)
+  {
+    return 0;
+  }
+  else
+  {
+    return 1 + maior(calcularAltura(p_raiz->esquerda), calcularAltura(p_raiz->direita));
+  }
+}
 
+int contarFolha(NO *p_raiz)
+{
   if (p_raiz == NULL)
   {
     return 0;
   }
   else
   {
-    altEsq = 1 + calcularAltura(p_raiz->esquerda);
-    altDir = 1 + calcularAltura(p_raiz->direita);
-
-    if (altEsq > altDir)
+    if ((p_raiz->esquerda) == NULL && (p_raiz->direita) == NULL)
     {
-      return 1 + calcularAltura(p_raiz->esquerda);
-    }
-    if (altDir > altEsq)
-    {
-      return 1 + calcularAltura(p_raiz->direita);
+      return 1;
     }
     else
     {
-      return 1 + calcularAltura(p_raiz->direita);
+      return contarFolha(p_raiz->esquerda) + contarFolha(p_raiz->direita);
     }
   }
 }
@@ -330,3 +361,5 @@ void limparLinha(int linha)
     printf(" ");
   }
 }
+
+// Atividade 03
