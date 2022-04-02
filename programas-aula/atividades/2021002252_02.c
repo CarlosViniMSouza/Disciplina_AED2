@@ -1,8 +1,6 @@
 /*
 Carlos Souza
-
 Matricula: 2021002252
-
 Turma III - Algoritmo e Estrutura de Dados II
 */
 
@@ -361,3 +359,4 @@ void limparLinha(int linha)
 }
 
 // Atividade 03 -> feita
+

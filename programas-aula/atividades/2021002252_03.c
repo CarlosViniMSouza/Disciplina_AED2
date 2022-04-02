@@ -1,0 +1,602 @@
+/*
+Benevaldo Pereira Gonçalves
+*/
+
+/*
+Assunto: Árvore Binária
+    01 - Estrutura do NO de uma árvore binária
+    02 - Criação da Árvore Binária
+    03 - Operação Incluir
+    04 - Operação Exibir: Pré-ordem
+    05 - Operação Exibir: Em Ordem
+    06 - Operação Exibir: Pós-ordem
+    07 - Contar Nro de NO
+    08 - Calcular altura da arvore
+    09 - Calcular quantidade de Folhas
+    10 - Remover
+*/
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <windows.h>
+#include <locale.h>
+
+// Criar a estrutura NO
+typedef struct TNO
+{
+    // Dado do NO
+    int letra;
+    // Ponteiro para o próximo NO da sub-arvore esquerda
+    struct TNO *esquerda;
+    // Ponteiro para o próximo NO da sub-arvore direita
+    struct TNO *direita;
+} NO; // Criação de um novo tipo de dado chamado: NO
+
+// ATENÇÃO
+// *  : Significa declaração de um ponteiro.
+// ** : Significa declaração de um ponteiro que aponta
+//      para outro ponteiro, isto é, ponteiro de ponteiro.
+
+// OBS: A árvore será chamada pelo seu NÓ principal: raiz
+void criarArvore(NO **p_raiz);
+void inserir(NO **p_raiz, char p_elemento);
+void exibirPreOrdem(NO *p_raiz);
+void exibirEmOrdem(NO *p_raiz);
+void exibirPosOrdem(NO *p_raiz);
+int contarNO(NO *p_raiz);
+int contarFolhas(NO *p_raiz);
+char maior(char valor1, char valor2);
+int alturaArvore(NO *p_raiz);
+void obterDados(char *p_elemento);
+
+//*** Para Remover NO ***
+NO* remover(NO* p_raiz, char p_elemento);
+NO* desalocarArvore(NO *p_raiz);
+//***********************
+
+// Exibir todos os elementos da árvore binária de forma hierarquica.
+void exibirArvore(NO *p_raiz,int p_coluna, int p_linha);
+void exibirArvoreEsquerda(NO *p_raiz,int p_coluna, int p_linha);
+void exibirArvoreDireita(NO *p_raiz,int p_coluna, int p_linha);
+
+void menu();
+void configurarAmbiente();
+void gotoxy(int coluna, int linha);
+void limparLinha(int linha);
+int ObterOpcaoMenu();
+
+// Programa Principal
+int main()
+{
+    configurarAmbiente();
+    menu();
+}// Fim programa.
+
+
+// Processa a opção selecionada no Menu
+void menu()
+{
+    int opcao;
+    int qtdNO=0;
+    int qtdFolha=0;
+    int altura=0;
+    // Declarar um ponteiro para a estrutura de
+    // uma árvore binária do tipo NO chamada raiz.
+    NO *raiz;
+    char elemento='0';
+
+    // Inicializar o ponteiro da árvore binária
+    criarArvore(&raiz);
+
+    for(;;)  // Indica uma repetição (loop) INFINITO
+    {
+        // Limpa a tela
+        system("cls");
+        opcao = ObterOpcaoMenu();
+        switch (opcao)
+        {
+        case 1:
+        	// Limpa a tela
+            system("cls");
+            getchar();
+            // Obter o valor de um novo dado: elemento
+            // Parâmetro passado por Referência: &elemento
+            obterDados(&elemento);
+            // Inserir um NOVO elmento na árvore binária
+            inserir(&raiz,elemento);
+            break;
+
+        case 2:
+            // Limpa a tela
+            system("cls");
+            // Exibir árvore de forma hierárquica
+            exibirArvore(raiz,60,2);
+
+            limparLinha(25);
+            gotoxy(3,25);
+            printf("Pré-Ordem:");
+            exibirPreOrdem(raiz);
+
+            limparLinha(30);
+            gotoxy(5,30);
+            printf("Pressione uma tecla para continuar.");
+            getchar();
+            getchar();
+            break;
+
+        case 3:
+            // Limpa a tela
+            system("cls");
+            // Exibir árvore de forma hierárquica
+            exibirArvore(raiz,60,2);
+
+            limparLinha(25);
+            gotoxy(3,25);
+            printf("Em Ordem:");
+            exibirEmOrdem(raiz);
+
+            limparLinha(30);
+            gotoxy(5,30);
+            printf("Pressione uma tecla para continuar.");
+            getchar();
+            getchar();
+            break;
+
+        case 4:
+            // Limpa a tela
+            system("cls");
+            // Exibir árvore de forma hierárquica
+            exibirArvore(raiz,60,2);
+
+            limparLinha(25);
+            gotoxy(3,25);
+            printf("Pós-Ordem:");
+            exibirPosOrdem(raiz);
+
+            limparLinha(30);
+            gotoxy(5,30);
+            printf("Pressione uma tecla para continuar.");
+            getchar();
+            getchar();
+            break;
+
+        case 5:
+            // Contar número de NO da árvore.
+            qtdNO = contarNO(raiz);
+            limparLinha(25);
+            gotoxy(5,25);
+            printf("Quantidade de NO da árvore binária: %d",qtdNO);
+            gotoxy(5,30);
+            printf("Pressione uma tecla para continuar.");
+            getchar();
+            getchar();
+            break;
+
+        case 6:
+            // Contar número de NO da árvore.
+            altura = alturaArvore(raiz);
+            limparLinha(25);
+            gotoxy(5,25);
+            printf("Altura da árvore binária: %d",altura);
+            gotoxy(5,30);
+            printf("Pressione uma tecla para continuar.");
+            getchar();
+            getchar();
+            break;
+
+        case 7:
+            // Contar número de NO Folha da árvore.
+            qtdFolha = contarFolhas(raiz);
+            limparLinha(25);
+            gotoxy(5,25);
+            printf("Quantidade de Folha(s) da árvore binária: %d",qtdFolha);
+            gotoxy(5,30);
+            printf("Pressione uma tecla para continuar.");
+            getchar();
+            getchar();
+            break;
+
+        case 8:
+        	// Limpa a tela
+            system("cls");
+            getchar();
+            // Obter o valor a ser removido: elemento
+            // Parâmetro passado por Referência: &elemento
+            obterDados(&elemento);
+            // Remover um elmento na árvore binária
+
+            raiz = remover(raiz,elemento);
+            break;
+
+
+        case 9:
+            // Para sair do programa deve-se
+            // desalocar toda memória alocada.
+            raiz = desalocarArvore(raiz);
+
+            limparLinha(20);
+            gotoxy(5,20);
+            printf("Mensagem: Programa Finalizado.");
+            // Finaliza o programa com Sucesso.
+            exit(EXIT_SUCCESS);
+
+        default:
+            limparLinha(20);
+            gotoxy(5,20);
+            printf("Mensagem: Opção Inválida.");
+            getchar();
+            getchar();
+        }// switch
+
+    } //for
+}
+
+// Monta o Menu e obtem a opção selecionada
+int ObterOpcaoMenu()
+{
+    int opcao;
+    gotoxy(40,5);
+    printf("***************************************");
+    gotoxy(40,6);
+    printf("*         Árvore Binária              *");
+    gotoxy(40,7);
+    printf("***************************************");
+    gotoxy(40,8);
+    printf("*             Menu                    *");
+    gotoxy(40,9);
+    printf("***************************************");
+    gotoxy(40,10);
+    printf("* [1] - Inserir                       *");
+    gotoxy(40,11);
+    printf("* [2] - Exibir Pré-ordem              *");
+    gotoxy(40,12);
+    printf("* [3] - Exibir Em Ordem               *");
+    gotoxy(40,13);
+    printf("* [4] - Exibir Pós-Ordem              *");
+    gotoxy(40,14);
+    printf("* [5] - Contar Nro de NO              *");
+    gotoxy(40,15);
+    printf("* [6] - Calcular altura da arvore     *");
+    gotoxy(40,16);
+    printf("* [7] - Calcular quantidade de Folhas *");
+    gotoxy(40,17);
+    printf("* [8] - Remover                       *");
+    gotoxy(40,18);
+    printf("* [9] - Sair                          *");
+    gotoxy(40,19);
+    printf("***************************************");
+    gotoxy(40,20);
+    printf("Entre com a opcao = ");
+    scanf("%d",&opcao);
+    return opcao;
+}
+
+/*
+Procedimento obterDados: Obtem o valor de um dado (elemento)
+Parâmetros:
+           1 - p_elemento : Parâmetro passado por referência para obter o valor de
+                            um elemento.
+*/
+void obterDados(char *p_elemento)
+{
+    // Limpar a tela
+    system("cls");
+    gotoxy(40,5);
+    printf("************************************");
+    gotoxy(40,6);
+    printf("*       Entrada de Dados           *");
+    gotoxy(40,7);
+    printf("************************************");
+    gotoxy(40,10);
+    printf("Entre com o valor do Elemento: ");
+    scanf("%c",p_elemento);
+}
+
+/*
+Procedimento criarArvore: Inicializa uma árvore binária vazia
+Parâmetros:
+           1 - **p_raiz  : Parâmetro passado por referência de ponteiro para ponteiro.
+                           Representa o NO raiz da árvore binária.
+*/
+void criarArvore(NO **p_raiz)
+{
+// OBS: NULL é um valor que indica
+// um endereço de memória vazio válido.
+    *p_raiz = NULL;
+}
+
+/*
+Procedimento inserir: insere um novo elemento na árvore binária recursivamente.
+Parâmetros:
+           1 - **p_raiz  : Parâmetro passado por referência de ponteiro para ponteiro.
+                           Representa o NO raiz da árvore binária.
+           2 - p_elemento: Parâmetro passado por valor que representa o NOVO elemento
+                           a ser inserido na árbore binária.
+*/
+void inserir(NO **p_raiz, char p_elemento)
+{
+    if (*p_raiz == NULL)
+    {
+        // Ponteiro *p_raiz está apontando para NULL
+        // Aloca memória para a estrutura NO.
+        *p_raiz =(NO *) malloc(sizeof (NO));
+        // Atribui os valores para os campos da estrutura NO da árvore.
+        (*p_raiz)->esquerda = NULL;
+        (*p_raiz)->direita  = NULL;
+        (*p_raiz)->letra    = p_elemento;
+    }
+    else
+    {
+
+        if (p_elemento < ((*p_raiz)->letra))
+        {
+            // Inserir o novo elemento na sub-arvore esquerda recursivamente.
+            inserir(&((*p_raiz)->esquerda), p_elemento);
+        }
+        else
+        {
+            // Inserir o novo elemento na sub-arvore direita recursivamente.
+            inserir(&((*p_raiz)->direita), p_elemento);
+        }
+    }
+}
+
+/*
+Procedimento exibirPreOrdem: Exibe todos os elementos da árvore binária recursivamente
+                             na ordem: Pré-ordem.
+Parâmetros:
+            *p_raiz  : Parâmetro passado por valor que indica o ponteiro
+                       para o NO RAIZ da árvore binária.
+*/
+void exibirPreOrdem(NO *p_raiz)
+{
+
+    if(p_raiz != NULL)
+    {
+        printf(" (%c) ", p_raiz->letra);
+        exibirPreOrdem(p_raiz->esquerda);
+        exibirPreOrdem(p_raiz->direita);
+    }
+}
+
+
+/*
+Procedimento exibirPreOrdem: Exibe todos os elementos da árvore binária recursivamente
+                             na ordem: Em Ordem.
+Parâmetros:
+           **p_raiz  : Parâmetro passado por valor que indica o ponteiro
+                       para o NO RAIZ da árvore binária.
+*/
+void exibirEmOrdem(NO *p_raiz)
+{
+    if(p_raiz != NULL)
+    {
+        exibirEmOrdem(p_raiz->esquerda);
+        printf(" (%c) ", p_raiz->letra);
+        exibirEmOrdem(p_raiz->direita);
+    }
+}
+
+/*
+Procedimento exibirPreOrdem: Exibe todos os elementos da árvore binária recursivamente
+                             na ordem: Pós-ordem.
+Parâmetros:
+           **p_raiz  : Parâmetro passado por valor que indica o ponteiro
+                       para o NO RAIZ da árvore binária.
+*/
+void exibirPosOrdem(NO *p_raiz)
+{
+    if(p_raiz != NULL)
+    {
+        exibirPosOrdem(p_raiz->esquerda);
+        exibirPosOrdem(p_raiz->direita);
+        printf(" (%c) ", p_raiz->letra);
+    }
+}
+
+/*
+Procedimento exibirArvore: Exibe todos os elementos da árvore binária de forma hierarquica.
+Parâmetros:
+           *p_raiz  : Parâmetro passado por valor que indica o ponteiro
+                       para o NO RAIZ da árvore binária.
+           p_coluna : Coordenada da coluna para a função gotoxy()
+           p_linha  : Coordenada da linha  para a função gotoxy()
+*/
+void exibirArvore(NO *p_raiz, int p_coluna, int p_linha)
+{
+
+    if(p_raiz != NULL)
+    {
+        // Exibi o NO raiz da árvore binária
+        gotoxy(p_coluna, p_linha);
+        printf("(%c)", p_raiz->letra);
+        exibirArvoreEsquerda(p_raiz->esquerda, ( p_coluna - (p_coluna/2)), p_linha + 3);
+        exibirArvoreDireita(p_raiz->direita, ( p_coluna + (p_coluna/2)), p_linha + 3);
+    }else{
+      gotoxy(50, 5);
+      printf("Árvore Binária vazia!!!");
+    }
+}
+
+/*
+Procedimento exibirArvoreEsquerda:
+   Exibe todos os elementos da Sub-árvore Esquerda da Árvore Binária.
+Parâmetros:
+           *p_raiz  : Parâmetro passado por valor que indica o ponteiro
+                       para a sub-árvore esquerda.
+           p_coluna : Coordenada da coluna para a função gotoxy()
+           p_linha  : Coordenada da linha  para a função gotoxy()
+*/
+void exibirArvoreEsquerda(NO *p_raiz, int p_coluna, int p_linha)
+{
+
+    if(p_raiz != NULL)
+    {
+        // Exibir Sub-Árvore Esquerda
+        gotoxy(p_coluna, p_linha);
+        printf("(%c)", p_raiz->letra);
+        exibirArvoreEsquerda(p_raiz->esquerda, p_coluna - 10, p_linha + 3);
+        exibirArvoreEsquerda(p_raiz->direita,  p_coluna + 10, p_linha + 3);
+    }
+}
+
+/*
+Procedimento exibirArvoreDireita:
+   Exibe todos os elementos da Sub-árvore Direita da Árvore Binária.
+Parâmetros:
+           *p_raiz  : Parâmetro passado por valor que indica o ponteiro
+                       para a sub-árvore direita.
+           p_coluna : Coordenada da coluna para a função gotoxy()
+           p_linha  : Coordenada da linha  para a função gotoxy()
+*/
+void exibirArvoreDireita(NO *p_raiz, int p_coluna, int p_linha)
+{
+
+    if(p_raiz != NULL)
+    {
+        // Exibir Sub-Árvore Direita
+        gotoxy(p_coluna, p_linha);
+        printf("(%c)", p_raiz->letra);
+        exibirArvoreDireita(p_raiz->esquerda, p_coluna - 10, p_linha + 3);
+        exibirArvoreDireita(p_raiz->direita,  p_coluna + 10, p_linha + 3);
+    }
+}
+
+// Contar NO da árvore binária
+int contarNO(NO *p_raiz)
+{
+    if(p_raiz == NULL)
+        return 0;
+    else
+        return 1 + contarNO(p_raiz->esquerda) + contarNO(p_raiz->direita);
+}
+
+
+char maior(char valor1, char valor2)
+{
+    if(valor1 > valor2)
+        return valor1;
+    else
+        return valor2;  // Retorna maior ou igual
+}//maior
+
+
+// Calcular a altura da árvore
+int alturaArvore(NO *p_raiz)
+{
+    if((p_raiz == NULL) || (p_raiz->esquerda == NULL && p_raiz->direita == NULL))
+        return 0;
+    else
+        return 1 + maior(alturaArvore(p_raiz->esquerda), alturaArvore(p_raiz->direita));
+}
+
+
+int contarFolhas(NO *p_raiz)
+{
+    if(p_raiz == NULL)
+        return 0;
+    if(p_raiz->esquerda == NULL && p_raiz->direita == NULL)
+    {
+        return 1;
+    }
+
+    return contarFolhas(p_raiz->esquerda) + contarFolhas(p_raiz->direita);
+}
+
+//****************************************
+//** Remover NO                         **
+//****************************************
+
+NO* remover(NO* p_raiz, char p_elemento)
+{
+ if (p_raiz == NULL)
+    return NULL;
+ else if (p_raiz->letra > p_elemento)
+    p_raiz->esquerda = remover(p_raiz->esquerda, p_elemento);
+ else if (p_raiz->letra < p_elemento)
+    p_raiz->direita = remover(p_raiz->direita, p_elemento);
+ else { /* achou o nó a remover */
+ /* nó sem filhos */
+    if (p_raiz->esquerda == NULL && p_raiz->direita == NULL) {
+       free(p_raiz);
+       p_raiz = NULL;
+    }
+    /* nó só tem filho à direita */
+    else if (p_raiz->esquerda == NULL) {
+       NO *t = p_raiz;
+       p_raiz = p_raiz->direita;
+       free(t);
+    }
+    /* só tem filho à esquerda */
+    else if (p_raiz->direita == NULL) {
+       NO *t = p_raiz;
+       p_raiz = p_raiz->esquerda;
+       free(t);
+    }
+    /* nó tem os dois filhos */
+    else {
+       NO *f = p_raiz->esquerda;
+       while (f->direita != NULL) {
+          f = f->direita;
+       }
+       p_raiz->letra = f->letra; /* troca as informações */
+       f->letra = p_elemento;
+       p_raiz->esquerda = remover(p_raiz->esquerda,p_elemento);
+    }
+ }
+ return p_raiz;
+}
+
+// Libera toda memória alocada para a arvore binária
+NO* desalocarArvore(NO *p_raiz){
+ if (p_raiz != NULL){
+    desalocarArvore(p_raiz->esquerda); /* libera subarvore esquerda */
+    desalocarArvore(p_raiz->direita);  /* libera subarvore direita  */
+    free(p_raiz); /* libera raiz */
+ }
+ return NULL;
+}
+
+
+
+//****************************************
+//** Funções e Procedimentos Auxiliares **
+//****************************************
+
+// Procedimento para configuar o
+// ambiente do programa
+void configurarAmbiente()
+{
+    // Limpa a tela
+    system("cls");
+    // Define o idioma dos textos para Portugues
+    setlocale(LC_ALL,"Portuguese");
+    // Alterar a cor do fundo da tela
+    // e a cor da fonte (fundo azul e fonte branca).
+    system("color 1F");
+}
+
+// Procedimento para posicionar o cursor na coordenada X,Y
+// (Coluna(X),Linha(Y)) da tela.
+void gotoxy(int coluna, int linha)
+{
+    COORD point;
+    point.X = coluna;
+    point.Y = linha;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
+}
+
+// Limpa o texto de uma determinada linha da tela
+void limparLinha(int linha)
+{
+    int i;
+    for(i=0; i<100; i++)
+    {
+        gotoxy(i,linha);
+        printf(" ");
+    }
+}
+
+// Atividade 4 -> em andamento
