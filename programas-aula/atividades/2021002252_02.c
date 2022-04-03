@@ -47,9 +47,13 @@ int main()
 void menu()
 {
   int opcao;
-  int qtdNO, altura, folha = 0;
+  int qtdNO = 0;
+  int qtdFolha = 0;
+  int altura = 0;
+  // Declarar um ponteiro para a estrutura de
+  // uma arvore binaria do tipo NO chamada raiz.
   NO *raiz;
-  char elemento = '.';
+  char elemento = '0';
 
   criarArvore(&raiz);
 
@@ -359,4 +363,3 @@ void limparLinha(int linha)
 }
 
 // Atividade 03 -> feita
-
