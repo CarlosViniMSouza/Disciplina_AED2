@@ -125,10 +125,10 @@ void menu()
 
     case 7:
       system("cls");
-      folha = contarFolha(raiz);
+      qtdFolha = contarFolha(raiz);
       limparLinha(25);
       gotoxy(40, 16);
-      printf("Quantidade de Folhas = %d", folha);
+      printf("Quantidade de Folhas = %d", qtdFolha);
       gotoxy(40, 18);
       printf("Pressione uma tecla para continuar.");
       getchar();
