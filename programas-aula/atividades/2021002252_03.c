@@ -306,21 +306,21 @@ void criarArvore(NO **p_raiz)
 }
 
 /*
-Procedimento inserir: insere um novo elemento na �rvore bin�ria recursivamente.
-Par�metros:
-           1 - **p_raiz  : Par�metro passado por refer�ncia de ponteiro para ponteiro.
-                           Representa o NO raiz da �rvore bin�ria.
-           2 - p_elemento: Par�metro passado por valor que representa o NOVO elemento
-                           a ser inserido na �rbore bin�ria.
+Procedimento inserir: insere um novo elemento na arvore binaria recursivamente.
+Parametros:
+           1 - **p_raiz  : Parametro passado por referencia de ponteiro para ponteiro.
+                           Representa o NO raiz da arvore binaria.
+           2 - p_elemento: Parametro passado por valor que representa o NOVO elemento
+                           a ser inserido na arvore binaria.
 */
 void inserir(NO **p_raiz, char p_elemento)
 {
     if (*p_raiz == NULL)
     {
-        // Ponteiro *p_raiz est� apontando para NULL
-        // Aloca mem�ria para a estrutura NO.
+        // Ponteiro *p_raiz esta apontando para NULL
+        // Aloca memoria para a estrutura NO.
         *p_raiz = (NO *)malloc(sizeof(NO));
-        // Atribui os valores para os campos da estrutura NO da �rvore.
+        // Atribui os valores para os campos da estrutura NO da Arvore.
         (*p_raiz)->esquerda = NULL;
         (*p_raiz)->direita = NULL;
         (*p_raiz)->letra = p_elemento;
@@ -342,11 +342,11 @@ void inserir(NO **p_raiz, char p_elemento)
 }
 
 /*
-Procedimento exibirPreOrdem: Exibe todos os elementos da �rvore bin�ria recursivamente
-                             na ordem: Pr�-ordem.
-Par�metros:
-            *p_raiz  : Par�metro passado por valor que indica o ponteiro
-                       para o NO RAIZ da �rvore bin�ria.
+Procedimento exibirPreOrdem: Exibe todos os elementos da arvore binaria recursivamente
+                             na ordem: Pre-ordem.
+Parametros:
+            *p_raiz  : Parametro passado por valor que indica o ponteiro
+                       para o NO RAIZ da arvore binaria.
 */
 void exibirPreOrdem(NO *p_raiz)
 {
@@ -360,11 +360,11 @@ void exibirPreOrdem(NO *p_raiz)
 }
 
 /*
-Procedimento exibirPreOrdem: Exibe todos os elementos da �rvore bin�ria recursivamente
+Procedimento exibirPreOrdem: Exibe todos os elementos da arvore binaria recursivamente
                              na ordem: Em Ordem.
-Par�metros:
-           **p_raiz  : Par�metro passado por valor que indica o ponteiro
-                       para o NO RAIZ da �rvore bin�ria.
+Parametros:
+           **p_raiz  : Parametro passado por valor que indica o ponteiro
+                       para o NO RAIZ da arvore binaria.
 */
 void exibirEmOrdem(NO *p_raiz)
 {
@@ -377,11 +377,11 @@ void exibirEmOrdem(NO *p_raiz)
 }
 
 /*
-Procedimento exibirPreOrdem: Exibe todos os elementos da �rvore bin�ria recursivamente
-                             na ordem: P�s-ordem.
-Par�metros:
-           **p_raiz  : Par�metro passado por valor que indica o ponteiro
-                       para o NO RAIZ da �rvore bin�ria.
+Procedimento exibirPreOrdem: Exibe todos os elementos da arvore binaria recursivamente
+                             na ordem: Pos-ordem.
+Parametros:
+           **p_raiz  : Parametro passado por valor que indica o ponteiro
+                       para o NO RAIZ da arvore binaria.
 */
 void exibirPosOrdem(NO *p_raiz)
 {
@@ -394,19 +394,19 @@ void exibirPosOrdem(NO *p_raiz)
 }
 
 /*
-Procedimento exibirArvore: Exibe todos os elementos da �rvore bin�ria de forma hierarquica.
-Par�metros:
-           *p_raiz  : Par�metro passado por valor que indica o ponteiro
-                       para o NO RAIZ da �rvore bin�ria.
-           p_coluna : Coordenada da coluna para a fun��o gotoxy()
-           p_linha  : Coordenada da linha  para a fun��o gotoxy()
+Procedimento exibirArvore: Exibe todos os elementos da arvore binaria de forma hierarquica.
+Parametros:
+           *p_raiz  : Parametro passado por valor que indica o ponteiro
+                       para o NO RAIZ da arvore binaria.
+           p_coluna : Coordenada da coluna para a funcao gotoxy()
+           p_linha  : Coordenada da linha  para a funcao gotoxy()
 */
 void exibirArvore(NO *p_raiz, int p_coluna, int p_linha)
 {
 
     if (p_raiz != NULL)
     {
-        // Exibi o NO raiz da �rvore bin�ria
+        // Exibi o NO raiz da arvore binaria
         gotoxy(p_coluna, p_linha);
         printf("(%c)", p_raiz->letra);
         exibirArvoreEsquerda(p_raiz->esquerda, (p_coluna - (p_coluna / 2)), p_linha + 3);
@@ -415,25 +415,25 @@ void exibirArvore(NO *p_raiz, int p_coluna, int p_linha)
     else
     {
         gotoxy(50, 5);
-        printf("�rvore Bin�ria vazia!!!");
+        printf("Arvore Binaria vazia!!!");
     }
 }
 
 /*
 Procedimento exibirArvoreEsquerda:
-   Exibe todos os elementos da Sub-�rvore Esquerda da �rvore Bin�ria.
-Par�metros:
-           *p_raiz  : Par�metro passado por valor que indica o ponteiro
-                       para a sub-�rvore esquerda.
-           p_coluna : Coordenada da coluna para a fun��o gotoxy()
-           p_linha  : Coordenada da linha  para a fun��o gotoxy()
+   Exibe todos os elementos da Sub-Arvore Esquerda da Arvore Binaria.
+Parametros:
+           *p_raiz  : Parametro passado por valor que indica o ponteiro
+                       para a sub-arvore esquerda.
+           p_coluna : Coordenada da coluna para a funcao gotoxy()
+           p_linha  : Coordenada da linha  para a funcao gotoxy()
 */
 void exibirArvoreEsquerda(NO *p_raiz, int p_coluna, int p_linha)
 {
 
     if (p_raiz != NULL)
     {
-        // Exibir Sub-�rvore Esquerda
+        // Exibir Sub-Arvore Esquerda
         gotoxy(p_coluna, p_linha);
         printf("(%c)", p_raiz->letra);
         exibirArvoreEsquerda(p_raiz->esquerda, p_coluna - 10, p_linha + 3);
@@ -443,19 +443,19 @@ void exibirArvoreEsquerda(NO *p_raiz, int p_coluna, int p_linha)
 
 /*
 Procedimento exibirArvoreDireita:
-   Exibe todos os elementos da Sub-�rvore Direita da �rvore Bin�ria.
-Par�metros:
-           *p_raiz  : Par�metro passado por valor que indica o ponteiro
-                       para a sub-�rvore direita.
-           p_coluna : Coordenada da coluna para a fun��o gotoxy()
-           p_linha  : Coordenada da linha  para a fun��o gotoxy()
+   Exibe todos os elementos da Sub-Arvore Direita da Arvore Binaria.
+Parametros:
+           *p_raiz  : Parametro passado por valor que indica o ponteiro
+                       para a sub-arvore direita.
+           p_coluna : Coordenada da coluna para a funcao gotoxy()
+           p_linha  : Coordenada da linha  para a funcao gotoxy()
 */
 void exibirArvoreDireita(NO *p_raiz, int p_coluna, int p_linha)
 {
 
     if (p_raiz != NULL)
     {
-        // Exibir Sub-�rvore Direita
+        // Exibir Sub-Arvore Direita
         gotoxy(p_coluna, p_linha);
         printf("(%c)", p_raiz->letra);
         exibirArvoreDireita(p_raiz->esquerda, p_coluna - 10, p_linha + 3);
@@ -463,7 +463,7 @@ void exibirArvoreDireita(NO *p_raiz, int p_coluna, int p_linha)
     }
 }
 
-// Contar NO da �rvore bin�ria
+// Contar NO da arvore binaria
 int contarNO(NO *p_raiz)
 {
     if (p_raiz == NULL)
@@ -480,7 +480,7 @@ char maior(char valor1, char valor2)
         return valor2; // Retorna maior ou igual
 } // maior
 
-// Calcular a altura da �rvore
+// Calcular a altura da arvore
 int alturaArvore(NO *p_raiz)
 {
     if ((p_raiz == NULL) || (p_raiz->esquerda == NULL && p_raiz->direita == NULL))
@@ -514,28 +514,28 @@ NO *remover(NO *p_raiz, char p_elemento)
     else if (p_raiz->letra < p_elemento)
         p_raiz->direita = remover(p_raiz->direita, p_elemento);
     else
-    {   /* achou o n� a remover */
-        /* n� sem filhos */
+    { /* achou o no para remover */
+        /* no sem filhos */
         if (p_raiz->esquerda == NULL && p_raiz->direita == NULL)
         {
             free(p_raiz);
             p_raiz = NULL;
         }
-        /* n� s� tem filho � direita */
+        /* no soh tem filho a direita */
         else if (p_raiz->esquerda == NULL)
         {
             NO *t = p_raiz;
             p_raiz = p_raiz->direita;
             free(t);
         }
-        /* s� tem filho � esquerda */
+        /* soh tem filho a esquerda */
         else if (p_raiz->direita == NULL)
         {
             NO *t = p_raiz;
             p_raiz = p_raiz->esquerda;
             free(t);
         }
-        /* n� tem os dois filhos */
+        /* no tem os dois filhos */
         else
         {
             NO *f = p_raiz->esquerda;
@@ -543,7 +543,7 @@ NO *remover(NO *p_raiz, char p_elemento)
             {
                 f = f->direita;
             }
-            p_raiz->letra = f->letra; /* troca as informa��es */
+            p_raiz->letra = f->letra; /* troca as informacoes */
             f->letra = p_elemento;
             p_raiz->esquerda = remover(p_raiz->esquerda, p_elemento);
         }
@@ -551,7 +551,7 @@ NO *remover(NO *p_raiz, char p_elemento)
     return p_raiz;
 }
 
-// Libera toda mem�ria alocada para a arvore bin�ria
+// Libera toda memoria alocada para a arvore binaria
 NO *desalocarArvore(NO *p_raiz)
 {
     if (p_raiz != NULL)
@@ -564,7 +564,7 @@ NO *desalocarArvore(NO *p_raiz)
 }
 
 //****************************************
-//** Fun��es e Procedimentos Auxiliares **
+//** Funcoes e Procedimentos Auxiliares **
 //****************************************
 
 // Procedimento para configuar o
@@ -601,4 +601,4 @@ void limparLinha(int linha)
     }
 }
 
-// Atividade 4 -> em andamento
+// Atividade 4 -> quase completa
