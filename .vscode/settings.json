@@ -3,7 +3,8 @@
     "string.h": "c",
     "stdio.h": "c",
     "conio.h": "c",
-    "windows.h": "c"
+    "windows.h": "c",
+    "stdlib.h": "c"
   },
   "C_Cpp.errorSquiggles": "Disabled"
 }
