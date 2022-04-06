@@ -1,4 +1,4 @@
 git add -A
-git commit -m "atividades: 2021002252_03.c -> fix errors comment conclud"
+git commit -m "livro_ED_com_C -> cap01.c => test programs"
 git push
 git status

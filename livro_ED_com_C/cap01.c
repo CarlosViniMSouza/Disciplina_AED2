@@ -1,19 +1,18 @@
-/*
-1. Tipos de Dados em C
-*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-/*
-2. Ponteiros em C
-*/
+struct Ponto
+{
+  float coordX;
+  float coordY;
+};
 
-/*
-3. Estruturas de dados em C
-*/
+void main()
+{
+  struct Ponto p;
 
-/*
-4. Estruturas em C
-*/
-
-// OBS.: Erro nas imagens e código fora do padrão.
-
-// A parte de árvore binária deverá ser descartada!
+  printf("Digite o ponto p(x, y) = ");
+  scanf("%f %f", &p.coordX, &p.coordY);
+  printf("\nPonto inserido = (%.2f, %.2f)", p.coordX, p.coordY);
+}
