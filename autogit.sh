@@ -1,4 +1,4 @@
 git add -A
-git commit -m "2021002252_03.c -> comments unsce remov"
+git commit -m "arv_bin_seca.c -> alts (part1) add"
 git push
 git status

@@ -3,42 +3,55 @@ Carlos Souza
 
 Matricula: 2021002252
 
-Turma III - Algoritmo e Estrutura de Dados II
+Turma III - Engenharia de Software
 */
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <locale.h>
 
 typedef struct TNO
 {
-  int numero;
-  struct TNO *esquerda;
-  struct TNO *direita;
-} NO;
+  int numero;           // Informacao do NO
+  struct TNO *esquerda; // Ponteiro p/ o prox. NO da sub-arvore esquerda.
+  struct TNO *direita;  // Ponteiro p/ o prox. NO da sub-arvore direita.
+} NO;                   // Tipo de Dado Abstrato chamado 'NO'
 
-void criarArvore(NO **p_raiz);
-void obterDados(int *p_elemento);
+// Funcoes chamadas no 'menu()'
+void menu();
 void inserir(NO **p_raiz, int p_elemento);
-void exibirPreOrdem(NO *p_raiz);
+void obterDados(int *p_elemento);
+void criarArvore(NO **p_raiz);
 void exibirEmOrdem(NO *p_raiz);
+void exibirPreOrdem(NO *p_raiz);
 void exibirPosOrdem(NO *p_raiz);
-int contarNo(NO *p_raiz);
+char maiorValor(int v1, int v2);
 int calcularAltura(NO *p_raiz);
 int contarFolha(NO *p_raiz);
-void menu();
+int contarNo(NO *p_raiz);
+NO *deletarArvore(NO *p_raiz);
+
+// Procedimentos auxiliares
+void configAmb();
 int ObterOpcaoMenu();
+void limparLinha(int linha);
 
 int main()
 {
+  configAmb();
   menu();
 }
 
 void menu()
 {
   int opcao;
-  NO *raiz;
-  int elemento, quantNo, altura, folha = 0;
+  int qtdNO = 0;
+  int qtdFolha = 0;
+  int altura = 0;
+
+  NO *raiz; // Ponteiro pra Estrutura da Arvore do tipo NO chamada raiz.
+  int elemento = '0';
 
   // Inicializar o ponteiro da árvore binária
   criarArvore(&raiz);
@@ -51,16 +64,19 @@ void menu()
     switch (opcao)
     {
     case 1:
+      system("cls");
+      getchar();
+
       // Obter o valor de um novo dado: elemento
       // Parâmetro passado por Referência: &elemento
       obterDados(&elemento);
       inserir(&raiz, elemento);
       break;
 
-    case 2:;
+    case 2:
       system("cls");
-      // Exite todos os dados da árvore binaria em Pré-ordem.
       exibirPreOrdem(raiz);
+      limparLinha(25);
       printf("\nPressione uma tecla para continuar.");
       getchar();
       getchar();
@@ -71,6 +87,7 @@ void menu()
       system("cls");
       // Exite todos os dados da árvore binaria Em ordem.
       exibirEmOrdem(raiz);
+      limparLinha(25);
       printf("\nPressione uma tecla para continuar.");
       getchar();
       getchar();
@@ -80,6 +97,7 @@ void menu()
       system("cls");
       // Exite todos os dados da árvore binaria em Pre-ordem.
       exibirPosOrdem(raiz);
+      limparLinha(25);
       printf("\nPressione uma tecla para continuar.");
       getchar();
       getchar();
@@ -88,8 +106,9 @@ void menu()
     case 5:
       system("cls");
       // Exibe a quant. de NOs existentes na arvore
-      quantNo = contarNo(raiz);
-      printf("\nA quantidade de NOs = %d", quantNo);
+      qtdNO = contarNo(raiz);
+      limparLinha(25);
+      printf("\nA quantidade de NOs = %d", qtdNO);
       getchar();
       getchar();
       break;
@@ -98,6 +117,7 @@ void menu()
       system("cls");
       // Exibe a altura da nossa arvore
       altura = calcularAltura(raiz);
+      limparLinha(25);
       printf("\nA altura da arvore = %d", altura);
       getchar();
       getchar();
@@ -106,8 +126,9 @@ void menu()
     case 7:
       system("cls");
       // Exibe a quantidade de folhas existentes na arvore
-      folha = contarFolha(raiz);
-      printf("A quantidade de folhas = %d", folha);
+      qtdFolha = contarFolha(raiz);
+      limparLinha(25);
+      printf("A quantidade de folhas = %d", qtdFolha);
       getchar();
       getchar();
       break;
@@ -121,8 +142,8 @@ void menu()
     default:
       system("cls");
       printf("Mensagem: Opção Inválida.");
-    } // switch
-  }   // for
+    }
+  }
 }
 
 // Monta o Menu e obtem a opção selecionada
@@ -148,9 +169,10 @@ int ObterOpcaoMenu()
 
 /*
 Procedimento obterDados: Obtem o valor de um dado (elemento)
+
 Parâmetros:
-           1 - p_elemento : Parâmetro passado por referência para obter o valor de
-                            um elemento.
+
+           1 - p_elemento : Parâmetro passado por referência para obter o valor de um elemento.
 */
 
 void obterDados(int *p_elemento)
@@ -233,22 +255,23 @@ int contarNo(NO *p_raiz)
   }
 }
 
+char maiorValor(int v1, int v2)
+{
+  if (v1 > v2)
+    return v1;
+  else
+    return v2;
+}
+
 int calcularAltura(NO *p_raiz)
 {
-  if (p_raiz == NULL || (p_raiz->esquerda) == NULL && (p_raiz->direita) == NULL)
+  if ((p_raiz == NULL) || (p_raiz->esquerda == NULL && p_raiz->direita == NULL)
   {
     return 0;
   }
   else
   {
-    if (calcularAltura(p_raiz->esquerda) > calcularAltura(p_raiz->direita))
-    {
-      return 1 + calcularAltura(p_raiz->esquerda);
-    }
-    else
-    {
-      return 1 + calcularAltura(p_raiz->direita);
-    }
+    return 1 + maior(calcularAltura(p_raiz->esquerda), calcularAltura(p_raiz->direita));
   }
 }
 
@@ -268,5 +291,34 @@ int contarFolha(NO *p_raiz)
     {
       return contarFolha(p_raiz->esquerda) + contarFolha(p_raiz->direita);
     }
+  }
+}
+
+NO *deletarArvore(NO *p_raiz)
+{
+  if (p_raiz != NULL)
+  {
+    deletarArvore(p_raiz->direita);  // libera NOs da sub-arvore direita
+    deletarArvore(p_raiz->esquerda); // libera NOs da sub-arvore esquerda
+    free(p_raiz);                    // libera raiz da Arvore
+  }
+
+  return NULL;
+}
+
+void configurarAmbiente()
+{
+  system("cls");
+  setlocale(LC_ALL, "Portuguese");
+  system("color 1F");
+}
+
+void limparLinha(int linha)
+{ // Limpar a tela
+  int i;
+  for (i = 0; i < 100; i++)
+  {
+    gotoxy(i, linha);
+    printf(" ");
   }
 }
