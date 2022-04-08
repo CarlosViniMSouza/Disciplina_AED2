@@ -53,7 +53,7 @@ int contarNO(NO *p_raiz);
 int contarFolhas(NO *p_raiz);
 char maior(char valor1, char valor2);
 int alturaArvore(NO *p_raiz);
-int pesquisar(NO* p_raiz, char p_elemento);
+NO* pesquisar(NO* p_raiz, int p_elemento);
 void obterDados(char *p_elemento);
 
 //*** Para Remover NO ***
@@ -90,7 +90,7 @@ void menu()
     // uma arvore binaria do tipo NO chamada raiz.
     NO *raiz;
     char elemento = '0';
-    char elemPesq = '0';
+    NO *elemPesq = NULL;
 
     // Inicializar o ponteiro da arvore binaria
     criarArvore(&raiz);
@@ -213,35 +213,33 @@ void menu()
             // Remover um elmento na arvore binaria
 
             raiz = remover(raiz, elemento);
+            getchar();
+			getchar();
             break;
             
         case 9:
-        	system("cls");
-            getchar();
         	// Obter o valor a ser pesquisado: elemento
             // Parâmetro passado por Referência: &elemento
             obterDados(&elemento);
             
-            // Pesquisar um elmento na arvore binaria
-            elemPesq = pesquisar(raiz, elemento);
+            // Pesquisar um elmento na árvore binária
+            elementoPesquisa = pesquisar(raiz,elemento);
             limparLinha(20);
             
-            if (elemPesq > 0) {
+            if (elementoPesquisa){
                 gotoxy(5,20);
-                printf("Elemento Encontrado");
-            }
-			else{
+                printf("Elemento Encontrado: (%d)",elementoPesquisa->numero);
+            }else{
                 gotoxy(5,20);
-                printf("Elemento NAO Encontrado!!!");
+                printf("Elemento NÃO Encontrado!!!");
             }
             getchar();
-            getchar();
+			getchar();
             break;
 
         case 10:
             // Para sair do programa deve-se
             // desalocar toda memoria alocada.
-            system("cls");
             raiz = desalocarArvore(raiz);
 
             limparLinha(20);
@@ -291,9 +289,9 @@ int ObterOpcaoMenu()
     gotoxy(40, 17);
     printf("* [8] - Remover                       *");
     gotoxy(40, 18);
-    printf("* [9] - Pesquisar                     *");
+    printf("* [9] - Remover                       *");
     gotoxy(40, 19);
-    printf("* [10] - Sair                         *");
+    printf("* [10] - Sair                          *");
     gotoxy(40, 20);
     printf("***************************************");
     gotoxy(40, 21);
@@ -518,24 +516,6 @@ int alturaArvore(NO *p_raiz)
         return 0;
     else
         return 1 + maior(alturaArvore(p_raiz->esquerda), alturaArvore(p_raiz->direita));
-}
-
-int pesquisar(NO* p_raiz, char p_elemento) {
-	if(p_raiz == NULL){
-        // Elemento existe na árvore binária
-        return 0;
-    }
-    else if(p_raiz->letra > p_elemento) {
-        // Pesquisar na sub-arvore direita
-        return pesquisar(p_raiz->esquerda, p_elemento);
-    }
-	else if(p_raiz->letra < p_elemento) {
-        // Pesquisar na sub-arvore esquerda
-        return pesquisar(p_raiz->direita, p_elemento);
-    }
-    else {
-    	return 1;
-	}
 }
 
 int contarFolhas(NO *p_raiz)
