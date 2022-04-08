@@ -49,15 +49,15 @@ void menu()
   int qtdNO = 0;
   int qtdFolha = 0;
   int altura = 0;
-
-  NO *raiz; // Ponteiro pra Estrutura da Arvore do tipo NO chamada raiz.
   int elemento = '0';
 
-  // Inicializar o ponteiro da árvore binária
+  NO *raiz; // Ponteiro pra Estrutura da Arvore do tipo NO chamada raiz.
+
+  // Inicializar o ponteiro da Arvore binaria
   criarArvore(&raiz);
 
   for (;;)
-  { // Indica uma repetição (loop) INFINITO
+  { // Indica uma repeticao (loop) INFINITO
 
     system("cls");
     opcao = ObterOpcaoMenu();
@@ -68,7 +68,7 @@ void menu()
       getchar();
 
       // Obter o valor de um novo dado: elemento
-      // Parâmetro passado por Referência: &elemento
+      // Parametro passado por Referencia: &elemento
       obterDados(&elemento);
       inserir(&raiz, elemento);
       break;
@@ -85,7 +85,7 @@ void menu()
 
     case 3:;
       system("cls");
-      // Exite todos os dados da árvore binaria Em ordem.
+      // Exite todos os dados da arvore binaria Em ordem.
       exibirEmOrdem(raiz);
       limparLinha(25);
       printf("\nPressione uma tecla para continuar.");
@@ -95,7 +95,7 @@ void menu()
 
     case 4:
       system("cls");
-      // Exite todos os dados da árvore binaria em Pre-ordem.
+      // Exite todos os dados da arvore binaria em Pre-ordem.
       exibirPosOrdem(raiz);
       limparLinha(25);
       printf("\nPressione uma tecla para continuar.");
@@ -128,25 +128,25 @@ void menu()
       // Exibe a quantidade de folhas existentes na arvore
       qtdFolha = contarFolha(raiz);
       limparLinha(25);
-      printf("A quantidade de folhas = %d", qtdFolha);
+      printf("\nA quantidade de folhas = %d", qtdFolha);
       getchar();
       getchar();
       break;
 
     case 8:
-      // Para sair do programa deve-se desalocar toda memória alocada.
+      // Para sair do programa deve-se desalocar toda memoria alocada.
       system("cls");
       printf("Mensagem: Programa Finalizado.");
       exit(EXIT_SUCCESS); // Finaliza o programa com Sucesso.
 
     default:
       system("cls");
-      printf("Mensagem: Opção Inválida.");
+      printf("Mensagem: Opcao Invalida.");
     }
   }
 }
 
-// Monta o Menu e obtem a opção selecionada
+// Monta o Menu e obtem a opcao selecionada
 int ObterOpcaoMenu()
 {
   int opcao;
@@ -170,9 +170,9 @@ int ObterOpcaoMenu()
 /*
 Procedimento obterDados: Obtem o valor de um dado (elemento)
 
-Parâmetros:
+Parametros:
 
-           1 - p_elemento : Parâmetro passado por referência para obter o valor de um elemento.
+    1 - p_elemento : Parametro passado por referencia para obter o valor de um elemento.
 */
 
 void obterDados(int *p_elemento)
@@ -183,7 +183,7 @@ void obterDados(int *p_elemento)
   printf("*       Entrada de Dados           *\n");
   printf("************************************\n");
   printf("Entre com o valor do Elemento: ");
-  scanf("%d", p_elemento);
+  scanf("%c", p_elemento);
 }
 
 void criarArvore(NO **p_raiz)
@@ -217,7 +217,7 @@ void exibirPreOrdem(NO *p_raiz)
 {
   if (p_raiz != NULL)
   {
-    printf("(%d)", p_raiz->numero);
+    printf("(%c)", p_raiz->numero);
     exibirPreOrdem(p_raiz->esquerda);
     exibirPreOrdem(p_raiz->direita);
   }
@@ -228,7 +228,7 @@ void exibirEmOrdem(NO *p_raiz)
   if (p_raiz != NULL)
   {
     exibirEmOrdem(p_raiz->esquerda);
-    printf("(%d)", p_raiz->numero);
+    printf("(%c)", p_raiz->numero);
     exibirEmOrdem(p_raiz->direita);
   }
 }
@@ -239,7 +239,7 @@ void exibirPosOrdem(NO *p_raiz)
   {
     exibirPosOrdem(p_raiz->esquerda);
     exibirPosOrdem(p_raiz->direita);
-    printf("(%d)", p_raiz->numero);
+    printf("(%c)", p_raiz->numero);
   }
 }
 
@@ -265,13 +265,14 @@ char maiorValor(int v1, int v2)
 
 int calcularAltura(NO *p_raiz)
 {
-  if ((p_raiz == NULL) || (p_raiz->esquerda == NULL && p_raiz->direita == NULL)
+  if ((p_raiz == NULL) || (p_raiz->esquerda == NULL && p_raiz->direita == NULL))
   {
     return 0;
   }
+
   else
   {
-    return 1 + maior(calcularAltura(p_raiz->esquerda), calcularAltura(p_raiz->direita));
+    return 1 + maiorValor(calcularAltura(p_raiz->esquerda), calcularAltura(p_raiz->direita));
   }
 }
 
@@ -318,7 +319,13 @@ void limparLinha(int linha)
   int i;
   for (i = 0; i < 100; i++)
   {
-    gotoxy(i, linha);
     printf(" ");
   }
+}
+
+void configAmb()
+{
+  system("cls");
+  setlocale(LC_ALL, "Portuguese");
+  system("color 1F");
 }
