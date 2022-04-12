@@ -53,7 +53,7 @@ int contarNO(NO *p_raiz);
 int contarFolhas(NO *p_raiz);
 char maior(char valor1, char valor2);
 int alturaArvore(NO *p_raiz);
-int pesquisar(NO* p_raiz, char p_elemento);
+int pesquisar(NO *p_raiz, char p_elemento);
 void obterDados(char *p_elemento);
 
 //*** Para Remover NO ***
@@ -214,24 +214,26 @@ void menu()
 
             raiz = remover(raiz, elemento);
             break;
-            
+
         case 9:
-        	system("cls");
+            system("cls");
             getchar();
-        	// Obter o valor a ser pesquisado: elemento
-            // Parâmetro passado por Referência: &elemento
+            // Obter o valor a ser pesquisado: elemento
+            // Parametro passado por Referencia: &elemento
             obterDados(&elemento);
-            
+
             // Pesquisar um elmento na arvore binaria
             elemPesq = pesquisar(raiz, elemento);
             limparLinha(20);
-            
-            if (elemPesq > 0) {
-                gotoxy(5,20);
+
+            if (elemPesq > 0)
+            {
+                gotoxy(5, 20);
                 printf("Elemento Encontrado");
             }
-			else{
-                gotoxy(5,20);
+            else
+            {
+                gotoxy(5, 20);
                 printf("Elemento NAO Encontrado!!!");
             }
             getchar();
@@ -257,7 +259,7 @@ void menu()
             getchar();
             getchar();
         } // switch
-    } // for
+    }     // for
 }
 
 // Monta o Menu e obtem a opcao selecionada
@@ -520,22 +522,27 @@ int alturaArvore(NO *p_raiz)
         return 1 + maior(alturaArvore(p_raiz->esquerda), alturaArvore(p_raiz->direita));
 }
 
-int pesquisar(NO* p_raiz, char p_elemento) {
-	if(p_raiz == NULL){
-        // Elemento existe na árvore binária
+int pesquisar(NO *p_raiz, char p_elemento)
+{
+    if (p_raiz == NULL)
+    {
+        // Elemento existe na arvore binaria
         return 0;
     }
-    else if(p_raiz->letra > p_elemento) {
+    else if (p_raiz->letra > p_elemento)
+    {
         // Pesquisar na sub-arvore direita
         return pesquisar(p_raiz->esquerda, p_elemento);
     }
-	else if(p_raiz->letra < p_elemento) {
+    else if (p_raiz->letra < p_elemento)
+    {
         // Pesquisar na sub-arvore esquerda
         return pesquisar(p_raiz->direita, p_elemento);
     }
-    else {
-    	return 1;
-	}
+    else
+    {
+        return 1;
+    }
 }
 
 int contarFolhas(NO *p_raiz)
