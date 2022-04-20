@@ -72,6 +72,9 @@ void gotoxy(int coluna, int linha);
 void limparLinha(int linha);
 int ObterOpcaoMenu();
 
+// para Arvore AVL
+int calcFB(NO *p_raiz);
+
 // Programa Principal
 int main()
 {
@@ -91,6 +94,7 @@ void menu()
     NO *raiz;
     char elemento = '0';
     char elemPesq = '0';
+    int fb = 0;
 
     // Inicializar o ponteiro da arvore binaria
     criarArvore(&raiz);
@@ -241,6 +245,27 @@ void menu()
             break;
 
         case 10:
+            system("cls");
+            getchar();
+            fb = calcFB(raiz);
+            gotoxy(5, 25);
+            printf("Valor do FB: %d", fb);
+            gotoxy(5, 30);
+            if (fb == 1 || fb == -1 || fb == 0)
+            {
+                printf("Essa arvore eh balanceada");
+            }
+            else
+            {
+                printf("Essa arvore Nao eh balanceada");
+            }
+            gotoxy(5, 35);
+            printf("Pressione uma tecla para continuar.");
+            getchar();
+            getchar();
+            break;
+
+        case 11:
             // Para sair do programa deve-se
             // desalocar toda memoria alocada.
             system("cls");
@@ -295,10 +320,12 @@ int ObterOpcaoMenu()
     gotoxy(40, 18);
     printf("* [9] - Pesquisar                     *");
     gotoxy(40, 19);
-    printf("* [10] - Sair                         *");
+    printf("* [10] - Calcular FB                  *");
     gotoxy(40, 20);
-    printf("***************************************");
+    printf("* [11] - Sair                         *");
     gotoxy(40, 21);
+    printf("***************************************");
+    gotoxy(40, 22);
     printf("Entre com a opcao = ");
     scanf("%d", &opcao);
     return opcao;
@@ -307,8 +334,7 @@ int ObterOpcaoMenu()
 /*
 Procedimento obterDados: Obtem o valor de um dado (elemento)
 Parametros:
-           1 - p_elemento : Parametro passado por referencia para obter o valor de
-                            um elemento.
+           1 - p_elemento : Parametro passado por referencia para obter o valor de um elemento.
 */
 void obterDados(char *p_elemento)
 {
@@ -542,6 +568,18 @@ int pesquisar(NO *p_raiz, char p_elemento)
     else
     {
         return 1;
+    }
+}
+
+int calcFB(NO *p_raiz)
+{
+    if (p_raiz == NULL)
+    {
+        return 0;
+    }
+    else
+    {
+        return alturaArvore(p_raiz->esquerda) - alturaArvore(p_raiz->direita);
     }
 }
 

@@ -1,4 +1,4 @@
 git add -A
-git commit -m "ativ04_tipoInt.c -> renamed how 2021002252_03_v2.c | program finished"
+git commit -m "2021002252_03.c -> updated"
 git push
 git status
