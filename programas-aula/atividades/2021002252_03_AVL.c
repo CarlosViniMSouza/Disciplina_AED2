@@ -28,12 +28,12 @@ typedef struct TNO
 {
   // Dado do NO
   int numero;
+  // Dado de Altura da arvore binaria AVL
+  int alt;
   // Ponteiro para o próximo NO da sub-arvore esquerda
   struct TNO *esquerda;
   // Ponteiro para o próximo NO da sub-arvore direita
   struct TNO *direita;
-  // Dado de Altura da arvore binaria AVL
-  int alt;
 } NO; // Criação de um novo tipo de dado chamado: NO
 
 // OBS.: struct Node = NO
@@ -48,12 +48,12 @@ typedef struct TNO
 // Principais funcoes da arvore binaria
 void criarArvore(NO **p_raiz);
 void obterDados(int *p_elemento);
-NO *inserir(NO **p_raiz, int p_elemento);
 int contarNO(NO *p_raiz);
 int contarFolhas(NO *p_raiz);
 int alturaArvore(NO *p_raiz);
 int maior(int valor1, int valor2);
 int pesquisar(NO *p_raiz, int p_elemento);
+NO *inserir(NO **p_raiz, int p_elemento);
 
 //*** Para Remover NO *****
 NO *remover(NO *p_raiz, int p_elemento);
@@ -117,7 +117,6 @@ void menu()
       // Obter o valor de um novo dado: elemento
       // Parâmetro passado por Referência: &elemento
       obterDados(&elemento);
-
       // Inserir um NOVO elmento na árvore binária
       inserir(&raiz, elemento);
       break;
@@ -363,9 +362,11 @@ NO *inserir(NO **p_raiz, int p_elemento)
     (*p_raiz)->numero = p_elemento;
     (*p_raiz)->esquerda = NULL;
     (*p_raiz)->direita = NULL;
-    (*p_raiz)->alt = 0;
+    (*p_raiz)->alt = 1;
+
+    return (*p_raiz);
   }
-  else if (p_elemento < ((*p_raiz)->numero))
+  if (p_elemento < ((*p_raiz)->numero))
   {
     // Inserir o novo elemento na sub-arvore esquerda recursivamente.
     (*p_raiz)->esquerda = inserir(&((*p_raiz)->esquerda), p_elemento);
@@ -375,15 +376,13 @@ NO *inserir(NO **p_raiz, int p_elemento)
     // Inserir o novo elemento na sub-arvore direita recursivamente.
     (*p_raiz)->direita = inserir(&((*p_raiz)->direita), p_elemento);
   }
-  /*
   else
   {
     return (*p_raiz);
   }
-  */
 
   // Atualizar altura do No raiz
-  (*p_raiz)->alt = alturaArvore((*p_raiz));
+  (*p_raiz)->alt = maior(alturaArvore((*p_raiz)->esquerda), alturaArvore((*p_raiz)->direita)) + 1;
 
   // Obtenha o fator de equilíbrio do No raiz para
   // Verificar se este No se tornou desequilibrado
@@ -407,14 +406,14 @@ NO *inserir(NO **p_raiz, int p_elemento)
   // 3 - Caso Esquerda Direita
   if (fb > 1 && p_elemento > ((*p_raiz)->esquerda)->numero)
   {
-    (*p_raiz)->esquerda = girarPraEsquerda((*p_raiz)->esquerda);
+    (*p_raiz)->esquerda = girarPraEsquerda(((*p_raiz)->esquerda));
     return girarPraDireita((*p_raiz));
   }
 
   // 4 - Caso Direita Esquerda
   if (fb < -1 && p_elemento < ((*p_raiz)->direita)->numero)
   {
-    (*p_raiz)->direita = girarPraDireita((*p_raiz)->direita);
+    (*p_raiz)->direita = girarPraDireita(((*p_raiz)->direita));
     return girarPraEsquerda((*p_raiz));
   }
 
@@ -666,23 +665,6 @@ NO *desalocarArvore(NO *p_raiz)
 
 // Funcoes que irao balancear a Arvore Binaria (AVL):
 
-NO *girarPraDireita(NO *p_raiz)
-{ // aqui, y = p_raiz
-  NO *x = p_raiz->esquerda;
-  NO *T2 = x->direita;
-
-  // Pra executar rotacao
-  x->direita = p_raiz;
-  p_raiz->esquerda = T2;
-
-  // Atualizar alturas
-  p_raiz->alt = alturaArvore(p_raiz);
-  x->alt = alturaArvore(x);
-
-  // Retornar nova raiz
-  return x;
-}
-
 NO *girarPraEsquerda(NO *p_raiz)
 { // Aqui, x = p_raiz
   NO *y = p_raiz->direita;
@@ -693,11 +675,28 @@ NO *girarPraEsquerda(NO *p_raiz)
   p_raiz->direita = T2;
 
   // Atualizar alturas
-  p_raiz->alt = alturaArvore(p_raiz);
-  y->alt = alturaArvore(y);
+  p_raiz->alt = 1 + maior(alturaArvore(p_raiz->esquerda), alturaArvore(p_raiz->direita));
+  y->alt = 1 + maior(alturaArvore(y->esquerda), alturaArvore(y->direita));
 
   // Retornar nova raiz
   return y;
+}
+
+NO *girarPraDireita(NO *p_raiz)
+{ // aqui, y = p_raiz
+  NO *x = p_raiz->esquerda;
+  NO *T2 = x->direita;
+
+  // Pra executar rotacao
+  x->direita = p_raiz;
+  p_raiz->esquerda = T2;
+
+  // Atualizar alturas
+  p_raiz->alt = 1 + maior(alturaArvore(p_raiz->esquerda), alturaArvore(p_raiz->direita));
+  x->alt = 1 + maior(alturaArvore(x->esquerda), alturaArvore(x->direita));
+
+  // Retornar nova raiz
+  return x;
 }
 
 int obterFB(NO *p_raiz)
