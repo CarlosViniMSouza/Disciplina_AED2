@@ -365,7 +365,7 @@ NO *inserir(NO **p_raiz, int p_elemento)
     (*p_raiz)->direita = NULL;
     (*p_raiz)->alt = 0;
   }
-  if (p_elemento < ((*p_raiz)->numero))
+  else if (p_elemento < ((*p_raiz)->numero))
   {
     // Inserir o novo elemento na sub-arvore esquerda recursivamente.
     (*p_raiz)->esquerda = inserir(&((*p_raiz)->esquerda), p_elemento);
@@ -375,10 +375,12 @@ NO *inserir(NO **p_raiz, int p_elemento)
     // Inserir o novo elemento na sub-arvore direita recursivamente.
     (*p_raiz)->direita = inserir(&((*p_raiz)->direita), p_elemento);
   }
+  /*
   else
   {
     return (*p_raiz);
   }
+  */
 
   // Atualizar altura do No raiz
   (*p_raiz)->alt = alturaArvore((*p_raiz));
