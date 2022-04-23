@@ -36,6 +36,8 @@ typedef struct TNO
   int alt;
 } NO; // Criação de um novo tipo de dado chamado: NO
 
+// OBS.: struct Node = NO
+
 // ATENÇÃO
 // *  : Significa declaração de um ponteiro.
 // ** : Significa declaração de um ponteiro que aponta
@@ -46,12 +48,17 @@ typedef struct TNO
 // Principais funcoes da arvore binaria
 void criarArvore(NO **p_raiz);
 void obterDados(int *p_elemento);
-void inserir(NO **p_raiz, int p_elemento);
 int contarNO(NO *p_raiz);
 int contarFolhas(NO *p_raiz);
 int alturaArvore(NO *p_raiz);
 int maior(int valor1, int valor2);
 int pesquisar(NO *p_raiz, int p_elemento);
+
+//*** Para Inserir NO *****
+NO *inserirNovoNO(int p_elemento);       // NOTA: key = p_elemento
+NO *inserir(NO *p_raiz, int p_elemento); // NOTA: node = p_raiz || key = p_elemento
+// inserir deixa de ser 'void' p/ ser do tipo 'NO'
+//*************************
 
 //*** Para Remover NO *****
 NO *remover(NO *p_raiz, int p_elemento);
@@ -90,13 +97,14 @@ int main()
 // Processa a opção selecionada no Menu
 void menu()
 {
+  // Declarar um ponteiro para a estrutura de
+  // uma árvore binária do tipo NO chamada raiz.
+  NO *raiz;
+
   int opcao;
   int qtdNO = 0;
   int qtdFolha = 0;
   int altura = 0;
-  // Declarar um ponteiro para a estrutura de
-  // uma árvore binária do tipo NO chamada raiz.
-  NO *raiz;
   int elemento = 0;
   char pesquisa = '0';
 
@@ -115,7 +123,7 @@ void menu()
       // Parâmetro passado por Referência: &elemento
       obterDados(&elemento);
       // Inserir um NOVO elmento na árvore binária
-      inserir(&raiz, elemento);
+      inserir(raiz, elemento);
       break;
 
     case 2:
@@ -341,6 +349,19 @@ void criarArvore(NO **p_raiz)
   *p_raiz = NULL;
 }
 
+NO *inserirNovoNO(int p_elemento)
+{
+  // Aloca memória para a estrutura NO.
+  NO *no = (NO *)malloc(sizeof(NO));
+  // Atribui os valores para os campos da estrutura NO da árvore.
+  no->numero = p_elemento;
+  no->esquerda = NULL;
+  no->direita = NULL;
+  no->alt = 0;
+
+  return (no);
+}
+
 /*
 Procedimento inserir: insere um novo elemento na árvore binária recursivamente.
 Parâmetros:
@@ -349,33 +370,65 @@ Parâmetros:
            2 - p_elemento: Parâmetro passado por valor que representa o NOVO elemento
                            a ser inserido na árbore binária.
 */
-void inserir(NO **p_raiz, int p_elemento)
+NO *inserir(NO *p_raiz, int p_elemento)
 {
-  if (*p_raiz == NULL)
+  if (p_raiz == NULL)
   {
-    // Ponteiro *p_raiz está apontando para NULL
-    // Aloca memória para a estrutura NO.
-    *p_raiz = (NO *)malloc(sizeof(NO));
-    // Atribui os valores para os campos da estrutura NO da árvore.
-    (*p_raiz)->numero = p_elemento;
-    (*p_raiz)->esquerda = NULL;
-    (*p_raiz)->direita = NULL;
-    (*p_raiz)->alt = 0;
+    return inserirNovoNO(p_elemento);
+  }
+  if (p_elemento < p_raiz->numero)
+  {
+    // Inserir o novo elemento na sub-arvore esquerda recursivamente.
+    p_raiz->esquerda = inserir(p_raiz->esquerda, p_elemento);
+  }
+  else if (p_elemento > p_raiz->numero)
+  {
+    // Inserir o novo elemento na sub-arvore direita recursivamente.
+    p_raiz->direita = inserir(p_raiz->direita, p_elemento);
   }
   else
   {
-
-    if (p_elemento < ((*p_raiz)->numero))
-    {
-      // Inserir o novo elemento na sub-arvore esquerda recursivamente.
-      inserir(&((*p_raiz)->esquerda), p_elemento);
-    }
-    else
-    {
-      // Inserir o novo elemento na sub-arvore direita recursivamente.
-      inserir(&((*p_raiz)->direita), p_elemento);
-    }
+    return p_raiz;
   }
+
+  // Atualizar altura do No raiz
+  p_raiz->alt - alturaArvore(p_raiz);
+
+  // Obtenha o fator de equilíbrio do No raiz para
+  // Verificar se este No se tornou desequilibrado
+  int fb = obterFB(p_raiz);
+  // fb = fator de balanceamento
+
+  // Se este nó ficar desbalanceado, então existem 4 casos
+
+  // 1 - Caso Esquerda Esquerda
+  if (fb > 1 && p_elemento < p_raiz->esquerda->numero)
+  {
+    return girarPraDireita(p_raiz);
+  }
+
+  // 2 - Caso Direita Direita
+  if (fb < -1 && p_elemento > p_raiz->direita->numero)
+  {
+    return girarPraEsquerda(p_raiz);
+  }
+
+  // 3 - Caso Esquerda Direita
+  if (fb > 1 && p_elemento > p_raiz->esquerda->numero)
+  {
+    p_raiz->esquerda = girarPraEsquerda(p_raiz->esquerda);
+    return girarPraDireita(p_raiz);
+  }
+
+  // 4 - Caso Direita Esquerda
+  if (fb < -1 && p_elemento < p_raiz->direita->numero)
+  {
+    p_raiz->direita = girarPraDireita(p_raiz->direita);
+    return girarPraEsquerda(p_raiz);
+  }
+
+  // retornar o ponteiro do No (inalterado)
+  return p_raiz;
 }
 
 /*
@@ -633,7 +686,7 @@ NO *girarPraDireita(NO *p_raiz)
 
   // Atualizar alturas
   p_raiz->alt = alturaArvore(p_raiz);
-  x->height = alturaArvore(x);
+  x->alt = alturaArvore(x);
 
   // Retornar nova raiz
   return x;
@@ -645,12 +698,12 @@ NO *girarPraEsquerda(NO *p_raiz)
   NO *T2 = y->esquerda;
 
   // Pra executar a rotacao
-  p_raiz->direita = y;
-  y->direita = T2;
+  y->esquerda = p_raiz;
+  p_raiz->direita = T2;
 
   // Atualizar alturas
-  y->direita = alturaArvore(y);
-  p_raiz->direita = alturaArvore(p_raiz);
+  p_raiz->alt = alturaArvore(p_raiz);
+  y->alt = alturaArvore(y);
 
   // Retornar nova raiz
   return y;
