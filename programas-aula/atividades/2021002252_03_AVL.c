@@ -73,7 +73,7 @@ void exibirArvoreDireita(NO *p_raiz, int p_coluna, int p_linha);
 // Funcoes extras para AVL:
 NO *girarPraEsquerda(NO **p_raiz);
 NO *girarPraDireita(NO **p_raiz);
-int obterFB(NO *p_raiz);
+int obterFB(NO **p_raiz);
 
 // Funcoes complementares para melhor funcionamento.
 void menu();
@@ -387,7 +387,7 @@ NO *inserir(NO **p_raiz, int p_elemento)
 
   // Obtenha o fator de equilíbrio do No raiz para
   // Verificar se este No se tornou desequilibrado
-  int fb = obterFB((*p_raiz));
+  int fb = obterFB(&(*p_raiz));
   // fb = fator de balanceamento
 
   // Se este nó ficar desbalanceado, então existem 4 casos
@@ -700,15 +700,15 @@ NO *girarPraDireita(NO **p_raiz)
   return x;
 }
 
-int obterFB(NO *p_raiz)
+int obterFB(NO **p_raiz)
 {
-  if (p_raiz == NULL)
+  if (*p_raiz == NULL)
   {
     return 0;
   }
   else
   {
-    return alturaArvore(p_raiz->esquerda) - alturaArvore(p_raiz->direita);
+    return alturaArvore((*p_raiz)->esquerda) - alturaArvore((*p_raiz)->direita);
   }
 }
 
