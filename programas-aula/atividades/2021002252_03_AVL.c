@@ -406,25 +406,15 @@ NO *inserir(NO **p_raiz, int p_elemento)
   // 3 - Caso Esquerda Direita
   if (fb > 1 && p_elemento > ((*p_raiz)->esquerda)->numero)
   {
-<<<<<<< HEAD
     (*p_raiz)->esquerda = girarPraEsquerda(((*p_raiz)->esquerda));
     return girarPraDireita((*p_raiz));
-=======
-    (*p_raiz)->esquerda = girarPraEsquerda(&((*p_raiz)->esquerda));
-    return girarPraDireita(&(*p_raiz));
->>>>>>> cb2892d2f193b6b4687ec86a503d44677e9f255a
   }
 
   // 4 - Caso Direita Esquerda
   if (fb < -1 && p_elemento < ((*p_raiz)->direita)->numero)
   {
-<<<<<<< HEAD
     (*p_raiz)->direita = girarPraDireita(((*p_raiz)->direita));
     return girarPraEsquerda((*p_raiz));
-=======
-    (*p_raiz)->direita = girarPraDireita(&((*p_raiz)->direita));
-    return girarPraEsquerda(&(*p_raiz));
->>>>>>> cb2892d2f193b6b4687ec86a503d44677e9f255a
   }
 
   // retornar o ponteiro do No (inalterado)
@@ -674,12 +664,7 @@ NO *desalocarArvore(NO *p_raiz)
 }
 
 // Funcoes que irao balancear a Arvore Binaria (AVL):
-
-<<<<<<< HEAD
 NO *girarPraEsquerda(NO *p_raiz)
-=======
-NO *girarPraEsquerda(NO **p_raiz)
->>>>>>> cb2892d2f193b6b4687ec86a503d44677e9f255a
 { // Aqui, x = p_raiz
   NO *y = (*p_raiz)->direita;
   NO *T2 = y->esquerda;
@@ -689,13 +674,8 @@ NO *girarPraEsquerda(NO **p_raiz)
   (*p_raiz)->direita = T2;
 
   // Atualizar alturas
-<<<<<<< HEAD
   p_raiz->alt = 1 + maior(alturaArvore(p_raiz->esquerda), alturaArvore(p_raiz->direita));
   y->alt = 1 + maior(alturaArvore(y->esquerda), alturaArvore(y->direita));
-=======
-  (*p_raiz)->alt = alturaArvore((*p_raiz));
-  y->alt = alturaArvore(y);
->>>>>>> cb2892d2f193b6b4687ec86a503d44677e9f255a
 
   // Retornar nova raiz
   return y;
@@ -714,30 +694,12 @@ NO *girarPraDireita(NO *p_raiz)
   // Atualizar alturas
   p_raiz->alt = 1 + maior(alturaArvore(p_raiz->esquerda), alturaArvore(p_raiz->direita));
   x->alt = 1 + maior(alturaArvore(x->esquerda), alturaArvore(x->direita));
-=======
-NO *girarPraDireita(NO **p_raiz)
-{ // aqui, y = p_raiz
-  NO *x = (*p_raiz)->esquerda;
-  NO *T2 = x->direita;
-
-  // Pra executar rotacao
-  x->direita = (*p_raiz);
-  (*p_raiz)->esquerda = T2;
-
-  // Atualizar alturas
-  (*p_raiz)->alt = alturaArvore((*p_raiz));
-  x->alt = alturaArvore(x);
->>>>>>> cb2892d2f193b6b4687ec86a503d44677e9f255a
 
   // Retornar nova raiz
   return x;
 }
 
-<<<<<<< HEAD
 int obterFB(NO *p_raiz)
-=======
-int obterFB(NO **p_raiz)
->>>>>>> cb2892d2f193b6b4687ec86a503d44677e9f255a
 {
   if (*p_raiz == NULL)
   {
