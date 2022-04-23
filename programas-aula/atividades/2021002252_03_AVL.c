@@ -1,49 +1,21 @@
 /*
-Benevaldo Pereira Gonçalves
-*/
-
-/*
-Assunto: Árvore Binária
-    01 - Estrutura do NO de uma árvore binária
-    02 - Criação da Árvore Binária
-    03 - Operação Incluir
-    04 - Operação Exibir: Pré-ordem
-    05 - Operação Exibir: Em Ordem
-    06 - Operação Exibir: Pós-ordem
-    07 - Contar Nro de NO
-    08 - Calcular altura da arvore
-    09 - Calcular quantidade de Folhas
-    10 - Remover
+Carlos Souza - Modificando para AVL
 */
 
 #include <stdio.h>
+#include <conio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <conio.h>
-#include <windows.h>
 #include <locale.h>
+#include <windows.h>
 
-// Criar a estrutura NO
 typedef struct TNO
 {
-  // Dado do NO
   int numero;
-  // Dado de Altura da arvore binaria AVL
   int alt;
-  // Ponteiro para o próximo NO da sub-arvore esquerda
   struct TNO *esquerda;
-  // Ponteiro para o próximo NO da sub-arvore direita
   struct TNO *direita;
-} NO; // Criação de um novo tipo de dado chamado: NO
-
-// OBS.: struct Node = NO
-
-// ATENÇÃO
-// *  : Significa declaração de um ponteiro.
-// ** : Significa declaração de um ponteiro que aponta
-//      para outro ponteiro, isto é, ponteiro de ponteiro.
-
-// OBS: A árvore será chamada pelo seu NÓ principal: raiz
+} NO;
 
 // Principais funcoes da arvore binaria
 void criarArvore(NO **p_raiz);
@@ -55,10 +27,9 @@ int maior(int valor1, int valor2);
 int pesquisar(NO *p_raiz, int p_elemento);
 NO *inserir(NO **p_raiz, int p_elemento);
 
-//*** Para Remover NO *****
+// Para Remover NO
 NO *remover(NO *p_raiz, int p_elemento);
 NO *desalocarArvore(NO *p_raiz);
-//*************************
 
 // Para definir a ordem de exibicao da arvore binaria:
 void exibirPreOrdem(NO *p_raiz);
@@ -71,8 +42,8 @@ void exibirArvoreEsquerda(NO *p_raiz, int p_coluna, int p_linha);
 void exibirArvoreDireita(NO *p_raiz, int p_coluna, int p_linha);
 
 // Funcoes extras para AVL:
-NO *girarPraEsquerda(NO *p_raiz);
-NO *girarPraDireita(NO *p_raiz);
+NO *girarPraEsquerda(NO *x);
+NO *girarPraDireita(NO *y);
 int obterFB(NO *p_raiz);
 
 // Funcoes complementares para melhor funcionamento.
@@ -89,13 +60,9 @@ int main()
   menu();
 } // Fim programa.
 
-// Processa a opção selecionada no Menu
 void menu()
 {
-  // Declarar um ponteiro para a estrutura de
-  // uma árvore binária do tipo NO chamada raiz.
   NO *raiz;
-
   int opcao;
   int qtdNO = 0;
   int qtdFolha = 0;
@@ -117,14 +84,11 @@ void menu()
       // Obter o valor de um novo dado: elemento
       // Parâmetro passado por Referência: &elemento
       obterDados(&elemento);
-      // Inserir um NOVO elmento na árvore binária
       inserir(&raiz, elemento);
       break;
 
     case 2:
-      // Limpa a tela
       system("cls");
-      // Exibir árvore de forma hierárquica
       exibirArvore(raiz, 60, 2);
 
       limparLinha(25);
@@ -140,9 +104,7 @@ void menu()
       break;
 
     case 3:
-      // Limpa a tela
       system("cls");
-      // Exibir árvore de forma hierárquica
       exibirArvore(raiz, 60, 2);
 
       limparLinha(25);
@@ -158,9 +120,7 @@ void menu()
       break;
 
     case 4:
-      // Limpa a tela
       system("cls");
-      // Exibir árvore de forma hierárquica
       exibirArvore(raiz, 60, 2);
 
       limparLinha(25);
@@ -176,7 +136,6 @@ void menu()
       break;
 
     case 5:
-      // Contar número de NO da árvore.
       qtdNO = contarNO(raiz);
       limparLinha(25);
       gotoxy(5, 25);
@@ -188,7 +147,6 @@ void menu()
       break;
 
     case 6:
-      // Contar número de NO da árvore.
       altura = alturaArvore(raiz);
       limparLinha(25);
       gotoxy(5, 25);
@@ -200,7 +158,6 @@ void menu()
       break;
 
     case 7:
-      // Contar número de NO Folha da árvore.
       qtdFolha = contarFolhas(raiz);
       limparLinha(25);
       gotoxy(5, 25);
@@ -212,23 +169,16 @@ void menu()
       break;
 
     case 8:
-      // Obter o valor a ser removido: elemento
-      // Parâmetro passado por Referência: &elemento
       obterDados(&elemento);
       // Remover um elmento na árvore binária
-
       raiz = remover(raiz, elemento);
       break;
 
     case 9:
       system("cls");
       getchar();
-
-      // Obter o valor a ser pesquisado: elemento
-      // Parametro passado por Referencia: &elemento
       obterDados(&elemento);
 
-      // Pesquisando elemento na arvore binaria
       pesquisa = pesquisar(raiz, elemento);
       limparLinha(20);
 
@@ -247,8 +197,6 @@ void menu()
       break;
 
     case 10:
-      // Para sair do programa deve-se
-      // desalocar toda memória alocada.
       raiz = desalocarArvore(raiz);
 
       limparLinha(20);
@@ -268,7 +216,6 @@ void menu()
   } // for
 }
 
-// Monta o Menu e obtem a opção selecionada
 int ObterOpcaoMenu()
 {
   int opcao;
@@ -310,12 +257,6 @@ int ObterOpcaoMenu()
   return opcao;
 }
 
-/*
-Procedimento obterDados: Obtem o valor de um dado (elemento)
-Parâmetros:
-           1 - p_elemento : Parâmetro passado por referência para obter o valor de
-                            um elemento.
-*/
 void obterDados(int *p_elemento)
 {
   // Limpar a tela
@@ -331,27 +272,58 @@ void obterDados(int *p_elemento)
   scanf("%d", p_elemento);
 }
 
-/*
-Procedimento criarArvore: Inicializa uma árvore binária vazia
-Parâmetros:
-           1 - **p_raiz  : Parâmetro passado por referência de ponteiro para ponteiro.
-                           Representa o NO raiz da árvore binária.
-*/
 void criarArvore(NO **p_raiz)
 {
-  // OBS: NULL é um valor que indica
-  // um endereço de memória vazio válido.
   *p_raiz = NULL;
 }
 
-/*
-Procedimento inserir: insere um novo elemento na árvore binária recursivamente.
-Parâmetros:
-           1 - **p_raiz  : Parâmetro passado por referência de ponteiro para ponteiro.
-                           Representa o NO raiz da árvore binária.
-           2 - p_elemento: Parâmetro passado por valor que representa o NOVO elemento
-                           a ser inserido na árbore binária.
-*/
+// Funcoes que irao balancear a Arvore Binaria (AVL):
+NO *girarPraEsquerda(NO *x)
+{ // Aqui, x = p_raiz
+  NO *y = x->direita;
+  NO *T2 = y->esquerda;
+
+  // Pra executar a rotacao
+  y->esquerda = x;
+  x->direita = T2;
+
+  // Atualizar alturas
+  x->alt = 1 + maior(alturaArvore(x->esquerda), alturaArvore(x->direita));
+  y->alt = 1 + maior(alturaArvore(y->esquerda), alturaArvore(y->direita));
+
+  // Retornar nova raiz
+  return y;
+}
+
+NO *girarPraDireita(NO *y)
+{ // aqui, y = p_raiz
+  NO *x = y->esquerda;
+  NO *T2 = x->direita;
+
+  // Pra executar rotacao
+  x->direita = y;
+  y->esquerda = T2;
+
+  // Atualizar alturas
+  y->alt = 1 + maior(alturaArvore(y->esquerda), alturaArvore(y->direita));
+  x->alt = 1 + maior(alturaArvore(x->esquerda), alturaArvore(x->direita));
+
+  // Retornar nova raiz
+  return x;
+}
+
+int obterFB(NO *p_raiz)
+{
+  if (p_raiz == NULL)
+  {
+    return 0;
+  }
+  else
+  {
+    return alturaArvore(p_raiz->esquerda) - alturaArvore(p_raiz->direita);
+  }
+}
+
 NO *inserir(NO **p_raiz, int p_elemento)
 {
   if (*p_raiz == NULL)
@@ -366,28 +338,32 @@ NO *inserir(NO **p_raiz, int p_elemento)
 
     return (*p_raiz);
   }
-  if (p_elemento < ((*p_raiz)->numero))
-  {
-    // Inserir o novo elemento na sub-arvore esquerda recursivamente.
-    (*p_raiz)->esquerda = inserir(&((*p_raiz)->esquerda), p_elemento);
-  }
-  else if (p_elemento > ((*p_raiz)->numero))
-  {
-    // Inserir o novo elemento na sub-arvore direita recursivamente.
-    (*p_raiz)->direita = inserir(&((*p_raiz)->direita), p_elemento);
-  }
   else
   {
-    return (*p_raiz);
+    if (p_elemento < ((*p_raiz)->numero))
+    {
+      // Inserir o novo elemento na sub-arvore esquerda recursivamente.
+      (*p_raiz)->esquerda = inserir(&((*p_raiz)->esquerda), p_elemento);
+    }
+
+    else if (p_elemento > ((*p_raiz)->numero))
+    {
+      // Inserir o novo elemento na sub-arvore direita recursivamente.
+      (*p_raiz)->direita = inserir(&((*p_raiz)->direita), p_elemento);
+    }
+
+    else
+    {
+      return (*p_raiz);
+    }
   }
 
   // Atualizar altura do No raiz
-  (*p_raiz)->alt = maior(alturaArvore((*p_raiz)->esquerda), alturaArvore((*p_raiz)->direita)) + 1;
+  (*p_raiz)->alt = 1 + maior(alturaArvore((*p_raiz)->esquerda), alturaArvore((*p_raiz)->direita));
 
   // Obtenha o fator de equilíbrio do No raiz para
   // Verificar se este No se tornou desequilibrado
   int fb = obterFB((*p_raiz));
-  // fb = fator de balanceamento
 
   // Se este nó ficar desbalanceado, então existem 4 casos
 
@@ -406,14 +382,14 @@ NO *inserir(NO **p_raiz, int p_elemento)
   // 3 - Caso Esquerda Direita
   if (fb > 1 && p_elemento > ((*p_raiz)->esquerda)->numero)
   {
-    (*p_raiz)->esquerda = girarPraEsquerda(((*p_raiz)->esquerda));
+    (*p_raiz)->esquerda = girarPraEsquerda((*p_raiz)->esquerda);
     return girarPraDireita((*p_raiz));
   }
 
   // 4 - Caso Direita Esquerda
   if (fb < -1 && p_elemento < ((*p_raiz)->direita)->numero)
   {
-    (*p_raiz)->direita = girarPraDireita(((*p_raiz)->direita));
+    (*p_raiz)->direita = girarPraDireita((*p_raiz)->direita);
     return girarPraEsquerda((*p_raiz));
   }
 
@@ -421,13 +397,6 @@ NO *inserir(NO **p_raiz, int p_elemento)
   return (*p_raiz);
 }
 
-/*
-Procedimento exibirPreOrdem: Exibe todos os elementos da árvore binária recursivamente
-                             na ordem: Pré-ordem.
-Parâmetros:
-            *p_raiz  : Parâmetro passado por valor que indica o ponteiro
-                       para o NO RAIZ da árvore binária.
-*/
 void exibirPreOrdem(NO *p_raiz)
 {
 
@@ -439,13 +408,6 @@ void exibirPreOrdem(NO *p_raiz)
   }
 }
 
-/*
-Procedimento exibirPreOrdem: Exibe todos os elementos da árvore binária recursivamente
-                             na ordem: Em Ordem.
-Parâmetros:
-           **p_raiz  : Parâmetro passado por valor que indica o ponteiro
-                       para o NO RAIZ da árvore binária.
-*/
 void exibirEmOrdem(NO *p_raiz)
 {
   if (p_raiz != NULL)
@@ -456,13 +418,6 @@ void exibirEmOrdem(NO *p_raiz)
   }
 }
 
-/*
-Procedimento exibirPreOrdem: Exibe todos os elementos da árvore binária recursivamente
-                             na ordem: Pós-ordem.
-Parâmetros:
-           **p_raiz  : Parâmetro passado por valor que indica o ponteiro
-                       para o NO RAIZ da árvore binária.
-*/
 void exibirPosOrdem(NO *p_raiz)
 {
   if (p_raiz != NULL)
@@ -473,20 +428,12 @@ void exibirPosOrdem(NO *p_raiz)
   }
 }
 
-/*
-Procedimento exibirArvore: Exibe todos os elementos da árvore binária de forma hierarquica.
-Parâmetros:
-           *p_raiz  : Parâmetro passado por valor que indica o ponteiro
-                       para o NO RAIZ da árvore binária.
-           p_coluna : Coordenada da coluna para a função gotoxy()
-           p_linha  : Coordenada da linha  para a função gotoxy()
-*/
 void exibirArvore(NO *p_raiz, int p_coluna, int p_linha)
 {
 
   if (p_raiz != NULL)
   {
-    // Exibi o NO raiz da árvore binária
+    // Exibir o NO raiz da árvore binária
     gotoxy(p_coluna, p_linha);
     printf("(%d)", p_raiz->numero);
     exibirArvoreEsquerda(p_raiz->esquerda, (p_coluna - (p_coluna / 2)), p_linha + 3);
@@ -499,15 +446,6 @@ void exibirArvore(NO *p_raiz, int p_coluna, int p_linha)
   }
 }
 
-/*
-Procedimento exibirArvoreEsquerda:
-   Exibe todos os elementos da Sub-árvore Esquerda da Árvore Binária.
-Parâmetros:
-           *p_raiz  : Parâmetro passado por valor que indica o ponteiro
-                       para a sub-árvore esquerda.
-           p_coluna : Coordenada da coluna para a função gotoxy()
-           p_linha  : Coordenada da linha  para a função gotoxy()
-*/
 void exibirArvoreEsquerda(NO *p_raiz, int p_coluna, int p_linha)
 {
 
@@ -521,15 +459,6 @@ void exibirArvoreEsquerda(NO *p_raiz, int p_coluna, int p_linha)
   }
 }
 
-/*
-Procedimento exibirArvoreDireita:
-   Exibe todos os elementos da Sub-árvore Direita da Árvore Binária.
-Parâmetros:
-           *p_raiz  : Parâmetro passado por valor que indica o ponteiro
-                       para a sub-árvore direita.
-           p_coluna : Coordenada da coluna para a função gotoxy()
-           p_linha  : Coordenada da linha  para a função gotoxy()
-*/
 void exibirArvoreDireita(NO *p_raiz, int p_coluna, int p_linha)
 {
 
@@ -543,7 +472,6 @@ void exibirArvoreDireita(NO *p_raiz, int p_coluna, int p_linha)
   }
 }
 
-// Contar NO da árvore binária
 int contarNO(NO *p_raiz)
 {
   if (p_raiz == NULL)
@@ -558,9 +486,8 @@ int maior(int valor1, int valor2)
     return valor1;
   else
     return valor2; // Retorna maior ou igual
-} // maior
+}
 
-// Calcular a altura da árvore
 int alturaArvore(NO *p_raiz)
 {
   if ((p_raiz == NULL) || (p_raiz->esquerda == NULL && p_raiz->direita == NULL))
@@ -600,10 +527,6 @@ int contarFolhas(NO *p_raiz)
 
   return contarFolhas(p_raiz->esquerda) + contarFolhas(p_raiz->direita);
 }
-
-//****************************************
-//** Remover NO                         **
-//****************************************
 
 NO *remover(NO *p_raiz, int p_elemento)
 {
@@ -651,7 +574,6 @@ NO *remover(NO *p_raiz, int p_elemento)
   return p_raiz;
 }
 
-// Libera toda memória alocada para a arvore binária
 NO *desalocarArvore(NO *p_raiz)
 {
   if (p_raiz != NULL)
@@ -663,59 +585,7 @@ NO *desalocarArvore(NO *p_raiz)
   return NULL;
 }
 
-// Funcoes que irao balancear a Arvore Binaria (AVL):
-NO *girarPraEsquerda(NO *p_raiz)
-{ // Aqui, x = p_raiz
-  NO *y = p_raiz->direita;
-  NO *T2 = y->esquerda;
-
-  // Pra executar a rotacao
-  y->esquerda = p_raiz;
-  p_raiz->direita = T2;
-
-  // Atualizar alturas
-  p_raiz->alt = 1 + maior(alturaArvore(p_raiz->esquerda), alturaArvore(p_raiz->direita));
-  y->alt = 1 + maior(alturaArvore(y->esquerda), alturaArvore(y->direita));
-
-  // Retornar nova raiz
-  return y;
-}
-
-NO *girarPraDireita(NO *p_raiz)
-{ // aqui, y = p_raiz
-  NO *x = p_raiz->esquerda;
-  NO *T2 = x->direita;
-
-  // Pra executar rotacao
-  x->direita = p_raiz;
-  p_raiz->esquerda = T2;
-
-  // Atualizar alturas
-  p_raiz->alt = 1 + maior(alturaArvore(p_raiz->esquerda), alturaArvore(p_raiz->direita));
-  x->alt = 1 + maior(alturaArvore(x->esquerda), alturaArvore(x->direita));
-
-  // Retornar nova raiz
-  return x;
-}
-
-int obterFB(NO *p_raiz)
-{
-  if (p_raiz == NULL)
-  {
-    return 0;
-  }
-  else
-  {
-    return alturaArvore(p_raiz->esquerda) - alturaArvore(p_raiz->direita);
-  }
-}
-
-//****************************************
-//** Funções e Procedimentos Auxiliares **
-//****************************************
-
-// Procedimento para configuar o
-// ambiente do programa
+// Outras funcoes
 void configurarAmbiente()
 {
   // Limpa a tela
