@@ -71,8 +71,8 @@ void exibirArvoreEsquerda(NO *p_raiz, int p_coluna, int p_linha);
 void exibirArvoreDireita(NO *p_raiz, int p_coluna, int p_linha);
 
 // Funcoes extras para AVL:
-NO *girarPraEsquerda(NO *p_raiz);
-NO *girarPraDireita(NO *p_raiz);
+NO *girarPraEsquerda(NO **p_raiz);
+NO *girarPraDireita(NO **p_raiz);
 int obterFB(NO *p_raiz);
 
 // Funcoes complementares para melhor funcionamento.
@@ -395,27 +395,27 @@ NO *inserir(NO **p_raiz, int p_elemento)
   // 1 - Caso Esquerda Esquerda
   if (fb > 1 && p_elemento < ((*p_raiz)->esquerda)->numero)
   {
-    return girarPraDireita((*p_raiz));
+    return girarPraDireita(&(*p_raiz));
   }
 
   // 2 - Caso Direita Direita
   if (fb < -1 && p_elemento > ((*p_raiz)->direita)->numero)
   {
-    return girarPraEsquerda((*p_raiz));
+    return girarPraEsquerda(&(*p_raiz));
   }
 
   // 3 - Caso Esquerda Direita
   if (fb > 1 && p_elemento > ((*p_raiz)->esquerda)->numero)
   {
-    (*p_raiz)->esquerda = girarPraEsquerda((*p_raiz)->esquerda);
-    return girarPraDireita((*p_raiz));
+    (*p_raiz)->esquerda = girarPraEsquerda(&((*p_raiz)->esquerda));
+    return girarPraDireita(&(*p_raiz));
   }
 
   // 4 - Caso Direita Esquerda
   if (fb < -1 && p_elemento < ((*p_raiz)->direita)->numero)
   {
-    (*p_raiz)->direita = girarPraDireita((*p_raiz)->direita);
-    return girarPraEsquerda((*p_raiz));
+    (*p_raiz)->direita = girarPraDireita(&((*p_raiz)->direita));
+    return girarPraEsquerda(&(*p_raiz));
   }
 
   // retornar o ponteiro do No (inalterado)
@@ -666,38 +666,38 @@ NO *desalocarArvore(NO *p_raiz)
 
 // Funcoes que irao balancear a Arvore Binaria (AVL):
 
-NO *girarPraDireita(NO *p_raiz)
-{ // aqui, y = p_raiz
-  NO *x = p_raiz->esquerda;
-  NO *T2 = x->direita;
-
-  // Pra executar rotacao
-  x->direita = p_raiz;
-  p_raiz->esquerda = T2;
-
-  // Atualizar alturas
-  p_raiz->alt = alturaArvore(p_raiz);
-  x->alt = alturaArvore(x);
-
-  // Retornar nova raiz
-  return x;
-}
-
-NO *girarPraEsquerda(NO *p_raiz)
+NO *girarPraEsquerda(NO **p_raiz)
 { // Aqui, x = p_raiz
-  NO *y = p_raiz->direita;
+  NO *y = (*p_raiz)->direita;
   NO *T2 = y->esquerda;
 
   // Pra executar a rotacao
-  y->esquerda = p_raiz;
-  p_raiz->direita = T2;
+  y->esquerda = (*p_raiz);
+  (*p_raiz)->direita = T2;
 
   // Atualizar alturas
-  p_raiz->alt = alturaArvore(p_raiz);
+  (*p_raiz)->alt = alturaArvore((*p_raiz));
   y->alt = alturaArvore(y);
 
   // Retornar nova raiz
   return y;
+}
+
+NO *girarPraDireita(NO **p_raiz)
+{ // aqui, y = p_raiz
+  NO *x = (*p_raiz)->esquerda;
+  NO *T2 = x->direita;
+
+  // Pra executar rotacao
+  x->direita = (*p_raiz);
+  (*p_raiz)->esquerda = T2;
+
+  // Atualizar alturas
+  (*p_raiz)->alt = alturaArvore((*p_raiz));
+  x->alt = alturaArvore(x);
+
+  // Retornar nova raiz
+  return x;
 }
 
 int obterFB(NO *p_raiz)
