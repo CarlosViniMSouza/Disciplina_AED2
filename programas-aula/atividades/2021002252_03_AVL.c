@@ -71,9 +71,9 @@ void exibirArvoreEsquerda(NO *p_raiz, int p_coluna, int p_linha);
 void exibirArvoreDireita(NO *p_raiz, int p_coluna, int p_linha);
 
 // Funcoes extras para AVL:
-NO *girarPraEsquerda(NO **p_raiz);
-NO *girarPraDireita(NO **p_raiz);
-int obterFB(NO **p_raiz);
+NO *girarPraEsquerda(NO *p_raiz);
+NO *girarPraDireita(NO *p_raiz);
+int obterFB(NO *p_raiz);
 
 // Funcoes complementares para melhor funcionamento.
 void menu();
@@ -386,7 +386,7 @@ NO *inserir(NO **p_raiz, int p_elemento)
 
   // Obtenha o fator de equilíbrio do No raiz para
   // Verificar se este No se tornou desequilibrado
-  int fb = obterFB(&(*p_raiz));
+  int fb = obterFB((*p_raiz));
   // fb = fator de balanceamento
 
   // Se este nó ficar desbalanceado, então existem 4 casos
@@ -394,13 +394,13 @@ NO *inserir(NO **p_raiz, int p_elemento)
   // 1 - Caso Esquerda Esquerda
   if (fb > 1 && p_elemento < ((*p_raiz)->esquerda)->numero)
   {
-    return girarPraDireita(&(*p_raiz));
+    return girarPraDireita((*p_raiz));
   }
 
   // 2 - Caso Direita Direita
   if (fb < -1 && p_elemento > ((*p_raiz)->direita)->numero)
   {
-    return girarPraEsquerda(&(*p_raiz));
+    return girarPraEsquerda((*p_raiz));
   }
 
   // 3 - Caso Esquerda Direita
@@ -666,12 +666,12 @@ NO *desalocarArvore(NO *p_raiz)
 // Funcoes que irao balancear a Arvore Binaria (AVL):
 NO *girarPraEsquerda(NO *p_raiz)
 { // Aqui, x = p_raiz
-  NO *y = (*p_raiz)->direita;
+  NO *y = p_raiz->direita;
   NO *T2 = y->esquerda;
 
   // Pra executar a rotacao
-  y->esquerda = (*p_raiz);
-  (*p_raiz)->direita = T2;
+  y->esquerda = p_raiz;
+  p_raiz->direita = T2;
 
   // Atualizar alturas
   p_raiz->alt = 1 + maior(alturaArvore(p_raiz->esquerda), alturaArvore(p_raiz->direita));
@@ -681,7 +681,6 @@ NO *girarPraEsquerda(NO *p_raiz)
   return y;
 }
 
-<<<<<<< HEAD
 NO *girarPraDireita(NO *p_raiz)
 { // aqui, y = p_raiz
   NO *x = p_raiz->esquerda;
@@ -701,13 +700,13 @@ NO *girarPraDireita(NO *p_raiz)
 
 int obterFB(NO *p_raiz)
 {
-  if (*p_raiz == NULL)
+  if (p_raiz == NULL)
   {
     return 0;
   }
   else
   {
-    return alturaArvore((*p_raiz)->esquerda) - alturaArvore((*p_raiz)->direita);
+    return alturaArvore(p_raiz->esquerda) - alturaArvore(p_raiz->direita);
   }
 }
 
