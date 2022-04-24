@@ -16,6 +16,7 @@ Turma III - Engenharia de Software
 typedef struct TNO
 {
   char letra;
+  int alt;
   struct TNO *esquerda;
   struct TNO *direita;
 } NO; // Criacao de um novo tipo de dado chamado: NO
@@ -50,8 +51,8 @@ void exibirArvoreDireita(NO *p_raiz, int p_coluna, int p_linha);
 // para Arvore em AVL
 int calcFB(NO *p_raiz);
 NO *balancearArvore(NO *p_raiz);
-NO *girarPraEsquerda(NO *p_raiz);
-NO *girarPraDireita(NO *p_raiz);
+NO *girarPraEsquerda(NO *x);
+NO *girarPraDireita(NO *y);
 
 // Programas para configurar sistema
 void menu();
@@ -322,6 +323,7 @@ void inserir(NO **p_raiz, char p_elemento)
     (*p_raiz)->esquerda = NULL;
     (*p_raiz)->direita = NULL;
     (*p_raiz)->letra = p_elemento;
+    (*p_raiz)->alt = 1;
   }
   else
   {
@@ -385,36 +387,38 @@ NO *balancearArvore(NO *p_raiz)
   return p_raiz;
 }
 
-NO *girarPraEsquerda(NO *p_raiz)
-{
-  NO *y;
-  NO *T2;
+NO *girarPraEsquerda(NO *x)
+{ // Aqui, x = p_raiz
+  NO *y = x->direita;
+  NO *T2 = y->esquerda;
 
   // Pra executar a rotacao
-  y = p_raiz->direita;
-  T2 = y->esquerda;
+  y->esquerda = x;
+  x->direita = T2;
 
-  p_raiz->direita = T2;
-  y->esquerda = p_raiz;
+  // Atualizar alturas
+  x->alt = 1 + maior(alturaArvore(x->esquerda), alturaArvore(x->direita));
+  y->alt = 1 + maior(alturaArvore(y->esquerda), alturaArvore(y->direita));
 
   // Retornar nova raiz
   return y;
 }
 
-NO *girarPraDireita(NO *p_raiz)
-{
-  NO *x;
-  NO *T2;
+NO *girarPraDireita(NO *y)
+{ // aqui, y = p_raiz
+  NO *x = y->esquerda;
+  NO *T2 = x->direita;
 
-  // Pra executar a rotacao
-  T2 = p_raiz->esquerda;
-  x = T2->direita;
+  // Pra executar rotacao
+  x->direita = y;
+  y->esquerda = T2;
 
-  p_raiz->esquerda = x;
-  T2->direita = p_raiz;
+  // Atualizar alturas
+  y->alt = 1 + maior(alturaArvore(y->esquerda), alturaArvore(y->direita));
+  x->alt = 1 + maior(alturaArvore(x->esquerda), alturaArvore(x->direita));
 
   // Retornar nova raiz
-  return T2;
+  return x;
 }
 
 void exibirPreOrdem(NO *p_raiz)
