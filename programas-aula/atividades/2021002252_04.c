@@ -343,14 +343,19 @@ void inserir(NO **p_raiz, char p_elemento)
 
 int calcFB(NO *p_raiz)
 {
-  if (p_raiz == NULL)
+  int esq = -1;
+  int dir = -1;
+
+  if (p_raiz->esquerda != NULL)
   {
-    return 0;
+    esq = alturaArvore(p_raiz->esquerda);
   }
-  else
+  if (p_raiz->direita != NULL)
   {
-    return alturaArvore(p_raiz->esquerda) - alturaArvore(p_raiz->direita);
+    dir = alturaArvore(p_raiz->direita);
   }
+
+  return esq - dir;
 }
 
 NO *balancearArvore(NO *p_raiz)
@@ -360,18 +365,18 @@ NO *balancearArvore(NO *p_raiz)
     return NULL;
   }
 
-  if (alturaArvore(p_raiz->esquerda) - alturaArvore(p_raiz->direita) == 2)
+  if (calcFB(p_raiz) == 2)
   {
-    if (alturaArvore(p_raiz->esquerda->esquerda) - alturaArvore(p_raiz->esquerda->direita) == -1)
+    if (calcFB(p_raiz->esquerda) == -1)
     {
       p_raiz->esquerda = girarPraEsquerda(p_raiz->esquerda);
     }
     p_raiz = girarPraDireita(p_raiz);
   }
 
-  else if (alturaArvore(p_raiz->esquerda) - alturaArvore(p_raiz->direita) == -2)
+  else if (calcFB(p_raiz) == -2)
   {
-    if (alturaArvore(p_raiz->direita->esquerda) - alturaArvore(p_raiz->direita->direita) == 1)
+    if (calcFB(p_raiz->direita) == 1)
     {
       p_raiz->direita = girarPraDireita(p_raiz->direita);
     }
@@ -397,8 +402,8 @@ NO *girarPraEsquerda(NO *x)
   x->direita = T2;
 
   // Atualizar alturas
-  x->alt = 1 + maior(alturaArvore(x->esquerda), alturaArvore(x->direita));
-  y->alt = 1 + maior(alturaArvore(y->esquerda), alturaArvore(y->direita));
+  x->alt = maior(alturaArvore(x->esquerda), alturaArvore(x->direita));
+  y->alt = maior(alturaArvore(y->esquerda), alturaArvore(y->direita));
 
   // Retornar nova raiz
   return y;
@@ -414,8 +419,8 @@ NO *girarPraDireita(NO *y)
   y->esquerda = T2;
 
   // Atualizar alturas
-  y->alt = 1 + maior(alturaArvore(y->esquerda), alturaArvore(y->direita));
-  x->alt = 1 + maior(alturaArvore(x->esquerda), alturaArvore(x->direita));
+  y->alt = maior(alturaArvore(y->esquerda), alturaArvore(y->direita));
+  x->alt = maior(alturaArvore(x->esquerda), alturaArvore(x->direita));
 
   // Retornar nova raiz
   return x;
