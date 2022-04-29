@@ -1,4 +1,4 @@
 git add -A
-git commit -m "2021002252_04.c -> updated"
+git commit -m "avl-saile.c -> add | check remover"
 git push
 git status
